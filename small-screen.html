@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflare Invoicing — Desktop Required</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f8fafc;
+      color: #0f172a;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-attachment: fixed;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 3rem 2.4rem 2.4rem;
+      max-width: 380px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1rem;
+      box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.1);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+    }
+
+    .icon-wrap {
+      width: 72px;
+      height: 72px;
+      background: #ecfdf5;
+      border: 1px solid rgba(5, 150, 105, 0.2);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 0.92rem;
+      color: #475569;
+      line-height: 1.65;
+    }
+
+    p strong { color: #059669; }
+
+    .divider {
+      width: 32px;
+      height: 2px;
+      background: #e2e8f0;
+      border-radius: 2px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f59e0b;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background: #047857;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-top: 0.4rem;
+      border: 1px solid #065f46;
+      box-shadow: 0 2px 8px rgba(4, 120, 87, 0.2);
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn:hover {
+      background: #065f46;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="index.html" class="brand">
+      <img src="/logo.svg" alt="Workflare Logo" />
+      Workflare Invoicing
+    </a>
+    <div class="icon-wrap">🖥️</div>
+    <h1>Desktop Only</h1>
+    <p>Workflare Invoicing is optimised for wide viewports.<br />Please use a screen at least <strong>1080px</strong> wide.</p>
+    <div class="divider"></div>
+    <div class="chip">
+      <span class="chip-dot"></span>
+      Your screen: <span id="sw-width">—</span>px wide
+    </div>
+    <a href="index.html" class="btn">← Back to Home</a>
+  </div>
+
+  <script>
+    document.getElementById('sw-width').textContent = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 1080) window.location.href = 'app.html';
+    });
+  </script>
+</body>
+</html>

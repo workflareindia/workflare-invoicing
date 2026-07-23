@@ -612,14 +612,149 @@
       border: 0;
     }
 
+    /* Hamburger Button */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 8px;
+      transition: background 0.2s;
+      z-index: 201;
+      flex-shrink: 0;
+    }
+
+    .hamburger:hover {
+      background: var(--bg-accent);
+    }
+
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--slate-700);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* Hamburger → X animation */
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile Menu Drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 200;
+    }
+
+    .mobile-nav-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .mobile-nav-drawer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.2rem 1.5rem;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+      animation: slideDown 0.25s ease;
+    }
+
+    .mobile-nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mobile-nav-links a {
+      display: block;
+      padding: 0.8rem 0.6rem;
+      color: var(--slate-700);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .mobile-nav-links a:hover {
+      background: var(--bg-accent);
+      color: var(--emerald-700);
+    }
+
+    .mobile-nav-links .btn-primary-launch {
+      display: flex;
+      margin-top: 0.75rem;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .mobile-nav.is-open {
+      display: block;
+    }
+
+    body.nav-open {
+      overflow: hidden;
+    }
+
     @media (max-width: 768px) {
-      .nav-container {
-        padding: 0.9rem 1.2rem;
+      .hamburger {
+        display: flex;
       }
 
       .nav-menu {
-        gap: 1rem;
-        flex-wrap: wrap;
+        display: none;
+      }
+
+      .nav-container {
+        padding: 0.9rem 1.2rem;
       }
 
       .hero-section {
@@ -680,8 +815,40 @@
         <li><a href="#privacy">See It In Action</a></li>
         <li><a href="app.html" class="btn-primary-launch">Launch App Workspace ⚡</a></li>
       </ul>
+
+      <!-- Hamburger Toggle -->
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
   </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+    <div class="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <a href="#" class="brand-logo" aria-label="Workflare Invoicing Home">
+          <img src="/logo.svg" alt="Workflare Logo" class="brand-logo-img" width="40" height="40" />
+          <span>Workflare Invoicing</span>
+        </a>
+        <button class="hamburger open" id="mobile-close-btn" aria-label="Close navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <ul class="mobile-nav-links">
+        <li><a href="#features" class="mobile-nav-link">Stack</a></li>
+        <li><a href="#modules" class="mobile-nav-link">Architecture</a></li>
+        <li><a href="#privacy" class="mobile-nav-link">See It In Action</a></li>
+        <li><a href="app.html" class="btn-primary-launch mobile-nav-link">Launch App Workspace ⚡</a></li>
+      </ul>
+    </div>
+  </div>
+
 
   <main id="main-content">
     <!-- Hero Section -->
@@ -882,6 +1049,43 @@
       Intent, Backed with Support.</p>
   </footer>
 
+  <script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileCloseBtn = document.getElementById('mobile-close-btn');
+    const backdrop = document.getElementById('mobile-nav-backdrop');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+    function openNav() {
+      mobileNav.classList.add('is-open');
+      hamburgerBtn.classList.add('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('nav-open');
+    }
+
+    function closeNav() {
+      mobileNav.classList.remove('is-open');
+      hamburgerBtn.classList.remove('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    hamburgerBtn.addEventListener('click', () => {
+      mobileNav.classList.contains('is-open') ? closeNav() : openNav();
+    });
+
+    mobileCloseBtn.addEventListener('click', closeNav);
+    backdrop.addEventListener('click', closeNav);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeNav);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) closeNav();
+    });
+  </script>
 </body>
 
 </html>
