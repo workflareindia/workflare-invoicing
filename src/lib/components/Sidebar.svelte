@@ -59,7 +59,7 @@
         <button class="btn btn-secondary btn-sm" on:click={onNewInvoice} title="Create blank new invoice">
           <Plus size={13} /> New Invoice
         </button>
-        <button class="btn btn-primary btn-sm" on:click={onSaveInvoice}>
+        <button class="btn btn-primary btn-sm desktop-save-btn" on:click={onSaveInvoice}>
           <Save size={13} /> Save
         </button>
       </div>
@@ -293,6 +293,13 @@
       {/if}
     </div>
   </div>
+
+  <!-- Mobile sticky save & preview button -->
+  <div class="mobile-save-bar mobile-only">
+    <button class="btn btn-primary mobile-save-btn" on:click={onSaveInvoice}>
+      <Save size={16} /> Save & Preview Invoice
+    </button>
+  </div>
 </aside>
 
 <style>
@@ -311,12 +318,13 @@
     border-bottom: 1px solid var(--border);
     background: #ffffff;
     z-index: 10;
+    flex-shrink: 0;
   }
 
   .header-top { display: flex; justify-content: space-between; align-items: center; }
   .header-top h2 { font-size: 15px; font-weight: 700; }
 
-  .sidebar-body { padding: 20px; flex: 1; overflow-y: auto; }
+  .sidebar-body { padding: 20px; flex: 1; overflow-y: auto; min-height: 0; }
 
   .form-section { margin-bottom: 24px; }
   .section-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
@@ -331,8 +339,8 @@
 
   .field-hint { font-size: 10px; color: #64748b; margin-top: 3px; font-weight: 500; }
 
-  .sig-type-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
-  .tab-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+  .sig-type-toggle { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tab-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; cursor: pointer; transition: all 0.15s; min-width: 80px; }
   .tab-btn.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
   .font-preview { padding: 6px 10px; background: #fafafa; border: 1px solid var(--border); border-radius: 6px; }
   .logo-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
@@ -350,4 +358,45 @@
   .mb-4 { margin-bottom: 6px; }
   .text-sub { font-size: 11px; }
   .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  /* Mobile save bar */
+  .mobile-save-bar {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    background: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .mobile-save-btn {
+    width: 100%;
+    padding: 13px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* Visibility helpers */
+  .desktop-save-btn { display: inline-flex; }
+  .mobile-only { display: none !important; }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      height: 100%;
+    }
+
+    .sidebar-body {
+      padding: 16px;
+    }
+
+    .desktop-save-btn { display: none !important; }
+    .mobile-only { display: flex !important; }
+
+    .header-top h2 { font-size: 14px; }
+  }
 </style>

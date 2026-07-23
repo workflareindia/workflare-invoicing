@@ -17,6 +17,9 @@
   let isClientsOpen = false;
   let isBulkCsvOpen = false;
 
+  // Mobile view state: 'editor' | 'preview'
+  let mobileView = 'editor';
+
   let invoice = {
     invoiceNumber: 'INV-' + Math.floor(1000 + Math.random() * 9000),
     date: new Date().toISOString().slice(0, 10),
@@ -82,7 +85,9 @@
       updatedAt: new Date().toISOString()
     });
     await loadDatabaseData();
-    alert('Invoice saved locally to database!');
+    // On mobile, switch to preview after saving
+    mobileView = 'preview';
+    alert('Invoice saved! Showing preview.');
   }
 
   function handleNewInvoice() {
@@ -110,6 +115,8 @@
       clientSignatureDesignation: '',
       clientSignatureImage: ''
     };
+    // Go back to editor on new invoice
+    mobileView = 'editor';
   }
 
   function handleImportInvoiceData(meta, items) {
@@ -140,21 +147,27 @@
     onOpenBulkCsv={() => isBulkCsvOpen = true}
     onNewInvoice={handleNewInvoice}
     onResetDb={handleResetDb}
+    {mobileView}
+    onSwitchView={(v) => mobileView = v}
   />
 
   <main class="main-content">
-    <Sidebar 
-      bind:invoice
-      {settings}
-      {clients}
-      {invoices}
-      onSelectClient={handleSelectClient}
-      onSaveInvoice={handleSaveInvoice}
-      onNewInvoice={handleNewInvoice}
-      onOpenBulkCsv={() => isBulkCsvOpen = true}
-    />
+    <!-- Editor panel: always shown on desktop; on mobile shown when mobileView==='editor' -->
+    <div class="sidebar-wrapper" class:mobile-hidden={mobileView === 'preview'}>
+      <Sidebar 
+        bind:invoice
+        {settings}
+        {clients}
+        {invoices}
+        onSelectClient={handleSelectClient}
+        onSaveInvoice={handleSaveInvoice}
+        onNewInvoice={handleNewInvoice}
+        onOpenBulkCsv={() => isBulkCsvOpen = true}
+      />
+    </div>
 
-    <section class="preview-area">
+    <!-- Preview panel: always shown on desktop; on mobile shown when mobileView==='preview' -->
+    <section class="preview-area" class:mobile-hidden={mobileView === 'editor'}>
       <InvoicePreview {invoice} {settings} template={activeTemplate} />
     </section>
   </main>
@@ -194,10 +207,44 @@
     overflow: hidden;
   }
 
+  .sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   .preview-area {
     flex: 1;
     padding: 30px;
     background: var(--bg-page);
     overflow-y: auto;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .main-content {
+      height: calc(100vh - 56px);
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .preview-area {
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      overflow-y: auto;
+    }
+
+    /* Hide panels based on mobile view state */
+    .mobile-hidden {
+      display: none !important;
+    }
   }
 </style>
