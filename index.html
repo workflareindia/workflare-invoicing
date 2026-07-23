@@ -17,13 +17,17 @@
   <!-- OpenGraph / Facebook / LinkedIn -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Workflare Invoicing — Enterprise-Grade Privacy-First Invoicing Engine" />
-  <meta property="og:description" content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+  <meta property="og:description"
+    content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+  <meta property="og:image" content="/snaps/3.webp" />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Workflare Invoicing — Enterprise-Grade Privacy-First Invoicing Engine" />
-  <meta name="twitter:description" content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+  <meta name="twitter:description"
+    content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+  <meta name="twitter:image" content="/snaps/3.webp" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
@@ -250,13 +254,14 @@
       gap: 1.2rem;
     }
 
-    /* Product UI Mockup Frame */
+    /* Product UI Preview Frame */
     .app-preview-frame {
       background: #ffffff;
       border: 1px solid var(--border-strong);
       border-radius: 16px;
-      box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 24px 50px -12px rgba(15, 23, 42, 0.18);
       overflow: hidden;
+      position: relative;
     }
 
     .frame-header {
@@ -298,59 +303,98 @@
       font-weight: 600;
     }
 
-    .preview-mock-content {
-      padding: 1.5rem;
-      background: #f8fafc;
+    .app-screenshot {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
-    .mock-invoice-card {
+    /* Screenshot Gallery Section */
+    .screenshots-section {
+      max-width: 1280px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+    }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .screenshot-card {
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .mock-header {
+    .screenshot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -12px rgba(5, 150, 105, 0.18);
+      border-color: var(--emerald-600);
+    }
+
+    .screenshot-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .screenshot-label {
+      padding: 0.75rem 1.2rem;
+      background: var(--bg-accent);
+      border-bottom: 1px solid var(--border);
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 1.2rem;
-      border-bottom: 2px solid var(--emerald-600);
-      padding-bottom: 1rem;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    .mock-company {
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--slate-900);
+    .screenshot-label-dots {
+      display: flex;
+      gap: 5px;
     }
 
-    .mock-status {
-      background: #dcfce7;
-      color: var(--emerald-800);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 700;
+    .screenshot-label-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .screenshot-label-dots span:nth-child(1) {
+      background: #ef4444;
+    }
+
+    .screenshot-label-dots span:nth-child(2) {
+      background: #f59e0b;
+    }
+
+    .screenshot-label-dots span:nth-child(3) {
+      background: #10b981;
+    }
+
+    .screenshot-label-text {
+      font-family: var(--font-mono);
       font-size: 0.75rem;
+      color: var(--slate-600);
+      font-weight: 600;
     }
 
-    .mock-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--border);
-      color: var(--slate-700);
+    .screenshot-img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
-    .mock-total {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--slate-900);
-      margin-top: 1rem;
-      padding-top: 0.5rem;
+    @media (max-width: 900px) {
+      .screenshots-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .screenshot-card.wide {
+        grid-column: 1;
+      }
     }
 
     /* Tech Stack & Architecture Grid */
@@ -491,49 +535,6 @@
       font-weight: 800;
     }
 
-    /* Privacy Architecture Deep Dive */
-    .privacy-deepdive {
-      max-width: 1280px;
-      margin: 0 auto 6rem;
-      padding: 0 2rem;
-    }
-
-    .deepdive-box {
-      background: var(--slate-900);
-      color: #ffffff;
-      border-radius: 20px;
-      padding: 4rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.4);
-    }
-
-    .deepdive-text h2 {
-      font-family: var(--font-heading);
-      font-size: 2.4rem;
-      font-weight: 800;
-      margin-bottom: 1.2rem;
-    }
-
-    .deepdive-text p {
-      color: var(--slate-400);
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-
-    .arch-code-block {
-      background: #020617;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      padding: 1.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: #38bdf8;
-      line-height: 1.6;
-    }
 
     /* Footer CTA */
     .final-cta {
@@ -562,6 +563,21 @@
       font-size: 0.9rem;
       background: #ffffff;
       font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    footer a {
+      color: var(--slate-700);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--emerald-600);
     }
 
     /* Accessibility Skip Link */
@@ -606,6 +622,12 @@
         flex-wrap: wrap;
       }
 
+      .hero-section {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 1.2rem 2rem;
+        gap: 2rem;
+      }
+
       .hero-title {
         font-size: 2.3rem;
       }
@@ -628,8 +650,8 @@
         gap: 1rem;
       }
 
-      .deepdive-box {
-        padding: 2rem 1.5rem;
+      .modules-grid {
+        grid-template-columns: 1fr;
       }
 
       .final-cta h2 {
@@ -655,7 +677,7 @@
       <ul class="nav-menu">
         <li><a href="#features">Stack</a></li>
         <li><a href="#modules">Architecture</a></li>
-        <li><a href="#privacy">Zero-Cloud Privacy</a></li>
+        <li><a href="#privacy">See It In Action</a></li>
         <li><a href="app.html" class="btn-primary-launch">Launch App Workspace ⚡</a></li>
       </ul>
     </nav>
@@ -664,199 +686,200 @@
   <main id="main-content">
     <!-- Hero Section -->
     <section class="hero-section" aria-labelledby="hero-heading">
-    <div>
-      <div class="hero-badge-pill">
-        🛡️ High-Performance Offline Invoicing Engine
-      </div>
-      <h1 class="hero-title" id="hero-heading">
-        Enterprise-Grade Invoicing <span>Without Cloud Middlemen</span>
-      </h1>
-      <p class="hero-description">
-        Workflare Invoicing is a privacy-first, offline web application designed for consultants, agencies, and
-        engineers. Store all billing history locally in browser IndexedDB, sign dual-party contracts, and render
-        print-ready vector PDFs in milliseconds.
-      </p>
-      <div class="hero-actions">
-        <a href="app.html" class="btn-primary-launch" style="font-size: 1.05rem; padding: 0.9rem 2.2rem;">Launch App
-          Workspace</a>
-        <a href="#modules" class="btn-hero-secondary">Explore Architecture</a>
-      </div>
-    </div>
-
-    <!-- Product Mockup Frame -->
-    <div class="app-preview-frame">
-      <div class="frame-header">
-        <div class="window-dots">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
+      <div>
+        <div class="hero-badge-pill">
+          🛡️ High-Performance Offline Invoicing Engine
         </div>
-        <div class="frame-title">Workflare Engine — A4 Live Canvas View</div>
-      </div>
-      <div class="preview-mock-content">
-        <div class="mock-invoice-card">
-          <div class="mock-header">
-            <div>
-              <div class="mock-company">Nexus Systems LLC</div>
-              <div style="font-size: 0.75rem; color: #64748b;">INV-9428 • Retainer Bill</div>
-            </div>
-            <span class="mock-status">✓ UNPAID</span>
-          </div>
-          <div class="mock-row">
-            <span>Full-Stack Engineering & Cloud Retainer</span>
-            <strong>₹1,50,000</strong>
-          </div>
-          <div class="mock-row">
-            <span>GST / Tax (18%)</span>
-            <strong>₹27,000</strong>
-          </div>
-          <div class="mock-total">
-            <span>Total Payable:</span>
-            <span style="color: var(--emerald-700);">₹1,77,000</span>
-          </div>
+        <h1 class="hero-title" id="hero-heading">
+          Enterprise-Grade Invoicing <span>Without Cloud Middlemen</span>
+        </h1>
+        <p class="hero-description">
+          Workflare Invoicing is a privacy-first, offline web application designed for consultants, agencies, and
+          engineers. Store all billing history locally in browser IndexedDB, sign dual-party contracts, and render
+          print-ready vector PDFs in milliseconds.
+        </p>
+        <div class="hero-actions">
+          <a href="app.html" class="btn-primary-launch" style="font-size: 1.05rem; padding: 0.9rem 2.2rem;">Launch App
+            Workspace</a>
+          <a href="#modules" class="btn-hero-secondary">Explore Architecture</a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Tech Stack Grid -->
-  <section class="tech-strip" id="features">
-    <div class="strip-title">Powered By High-Performance Client Infrastructure</div>
-    <div class="tech-logos">
-      <div class="tech-pill">⚡ Svelte 5 (Runes Reactive Core)</div>
-      <div class="tech-pill">💾 Dexie.js (IndexedDB Persistence)</div>
-      <div class="tech-pill">📄 html2pdf.js (Vector Renderer)</div>
-      <div class="tech-pill">📦 PapaParse & JSZip (Bulk Parser)</div>
-    </div>
-  </section>
+      <!-- Real A4 Invoice Preview Screenshot -->
+      <div class="app-preview-frame">
+        <div class="frame-header">
+          <div class="window-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="frame-title">Invoicing.Workflare.in</div>
+        </div>
+        <img src="/snaps/3.webp"
+          alt="Live A4 invoice preview showing Nexus Systems LLC invoice with dual signatures, bank details, QR code, and ₹1,77,000 grand total"
+          class="app-screenshot" width="800" height="1000" loading="eager" />
+      </div>
+    </section>
 
-  <!-- Detailed Modules Showcase -->
-  <section class="modules-section" id="modules">
-    <div class="section-heading">
-      <h2>Comprehensive Module Architecture</h2>
-      <p>Exploration of the core subsystems built into Workflare Invoicing.</p>
-    </div>
+    <!-- Tech Stack Grid -->
+    <section class="tech-strip" id="features">
+      <div class="strip-title">Powered By High-Performance Client Infrastructure</div>
+      <div class="tech-logos">
+        <div class="tech-pill">⚡ Svelte 5 (Runes Reactive Core)</div>
+        <div class="tech-pill">💾 Dexie.js (IndexedDB Persistence)</div>
+        <div class="tech-pill">📄 html2pdf.js (Vector Renderer)</div>
+        <div class="tech-pill">📦 PapaParse & JSZip (Bulk Parser)</div>
+      </div>
+    </section>
 
-    <div class="modules-grid">
-
-      <!-- Module 1 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 01</span>
-        <h3>Real-time Live Canvas Engine</h3>
-        <p>Bi-directional reactive rendering powered by Svelte 5. Form changes in the sidebar instantly reflect on an
-          exact A4 ratio document.</p>
-        <ul class="feature-list">
-          <li>Live subtotal and tax calculation</li>
-          <li>A4 ratio print preview bounds</li>
-          <li>Custom currency symbol customizer</li>
-        </ul>
+    <!-- Detailed Modules Showcase -->
+    <section class="modules-section" id="modules">
+      <div class="section-heading">
+        <h2>Comprehensive Module Architecture</h2>
+        <p>Exploration of the core subsystems built into Workflare Invoicing.</p>
       </div>
 
-      <!-- Module 2 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 02</span>
-        <h3>Client CRM & Directory DB</h3>
-        <p>Built-in client relationship database stored directly in the browser. Save recurring profiles and auto-fill
-          billing credentials instantly.</p>
-        <ul class="feature-list">
-          <li>Quick search & filter client list</li>
-          <li>1-Click billing auto-populate</li>
-          <li>Tax registration (GSTIN/EIN/VAT) tracking</li>
-        </ul>
+      <div class="modules-grid">
+
+        <!-- Module 1 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 01</span>
+          <h3>Real-time Live Canvas Engine</h3>
+          <p>Bi-directional reactive rendering powered by Svelte 5. Form changes in the sidebar instantly reflect on an
+            exact A4 ratio document.</p>
+          <ul class="feature-list">
+            <li>Live subtotal and tax calculation</li>
+            <li>A4 ratio print preview bounds</li>
+            <li>Custom currency symbol customizer</li>
+          </ul>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 02</span>
+          <h3>Client CRM & Directory DB</h3>
+          <p>Built-in client relationship database stored directly in the browser. Save recurring profiles and auto-fill
+            billing credentials instantly.</p>
+          <ul class="feature-list">
+            <li>Quick search & filter client list</li>
+            <li>1-Click billing auto-populate</li>
+            <li>Tax registration (GSTIN/EIN/VAT) tracking</li>
+          </ul>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 03</span>
+          <h3>Business Globals & Banking</h3>
+          <p>Persistent store for business credentials, beneficiary bank accounts, IFSC/SWIFT codes, and digital issuer
+            signatures.</p>
+          <ul class="feature-list">
+            <li>Logo upload & blob storage</li>
+            <li>Beneficiary banking & UPI integration</li>
+            <li>Typed or image digital signature editor</li>
+          </ul>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 04</span>
+          <h3>Bulk CSV & ZIP Engine</h3>
+          <p>Enterprise data batch processing. Upload bulk line item CSVs or export saved invoice histories into
+            compressed ZIP archives.</p>
+          <ul class="feature-list">
+            <li>PapaParse streaming CSV importer</li>
+            <li>JSZip batch archive downloader</li>
+            <li>Schema validation on upload</li>
+          </ul>
+        </div>
+
+        <!-- Module 5 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 05</span>
+          <h3>Vector PDF Generator</h3>
+          <p>Browser-native PDF rendering engine using html2canvas & jsPDF. Produces crisp, multi-page vector documents
+            ready for print.</p>
+          <ul class="feature-list">
+            <li>Zero page-break layout engine</li>
+            <li>High-DPI canvas scaling (2x)</li>
+            <li>Direct browser print fallback</li>
+          </ul>
+        </div>
+
+        <!-- Module 6 -->
+        <div class="module-card">
+          <span class="module-badge">MODULE 06</span>
+          <h3>Zero-Cloud Database Reset</h3>
+          <p>Full client data sovereignty. Complete database purge and local backup capabilities with single-click reset
+            controls.</p>
+          <ul class="feature-list">
+            <li>Browser-enforced encryption boundary</li>
+            <li>No tracking telemetry</li>
+            <li>Complete offline functionality</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- App Screenshots Gallery -->
+    <section class="screenshots-section" id="privacy">
+      <div class="section-heading">
+        <h2>See It In Action</h2>
+        <p>Every feature, right in your browser — no cloud, no account, no compromise.</p>
       </div>
 
-      <!-- Module 3 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 03</span>
-        <h3>Business Globals & Banking</h3>
-        <p>Persistent store for business credentials, beneficiary bank accounts, IFSC/SWIFT codes, and digital issuer
-          signatures.</p>
-        <ul class="feature-list">
-          <li>Logo upload & blob storage</li>
-          <li>Beneficiary banking & UPI integration</li>
-          <li>Typed or image digital signature editor</li>
-        </ul>
+      <div class="screenshots-grid">
+
+        <!-- Global Settings Modal -->
+        <div class="screenshot-card wide">
+          <div class="screenshot-label">
+            <div class="screenshot-label-dots"><span></span><span></span><span></span></div>
+            <span class="screenshot-label-text">Global Company Settings & Banking Config</span>
+          </div>
+          <img src="/snaps/4.webp"
+            alt="Global Company Settings modal showing business branding, issuer address, GSTIN, and bank account details with export/import JSON controls"
+            class="screenshot-img" width="1440" height="900" loading="lazy" />
+        </div>
+
+        <!-- Bulk CSV Operations -->
+        <div class="screenshot-card wide">
+          <div class="screenshot-label">
+            <div class="screenshot-label-dots"><span></span><span></span><span></span></div>
+            <span class="screenshot-label-text">Bulk CSV Import — 8 Invoices Generated Instantly</span>
+          </div>
+          <img src="/snaps/5.webp"
+            alt="Bulk CSV Operations modal showing successfully imported 8 invoices with Download All PDFs as ZIP option and load-to-editor previews"
+            class="screenshot-img" width="1440" height="900" loading="lazy" />
+        </div>
+
       </div>
+    </section>
 
-      <!-- Module 4 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 04</span>
-        <h3>Bulk CSV & ZIP Engine</h3>
-        <p>Enterprise data batch processing. Upload bulk line item CSVs or export saved invoice histories into
-          compressed ZIP archives.</p>
-        <ul class="feature-list">
-          <li>PapaParse streaming CSV importer</li>
-          <li>JSZip batch archive downloader</li>
-          <li>Schema validation on upload</li>
-        </ul>
-      </div>
-
-      <!-- Module 5 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 05</span>
-        <h3>Vector PDF Generator</h3>
-        <p>Browser-native PDF rendering engine using html2canvas & jsPDF. Produces crisp, multi-page vector documents
-          ready for print.</p>
-        <ul class="feature-list">
-          <li>Zero page-break layout engine</li>
-          <li>High-DPI canvas scaling (2x)</li>
-          <li>Direct browser print fallback</li>
-        </ul>
-      </div>
-
-      <!-- Module 6 -->
-      <div class="module-card">
-        <span class="module-badge">MODULE 06</span>
-        <h3>Zero-Cloud Database Reset</h3>
-        <p>Full client data sovereignty. Complete database purge and local backup capabilities with single-click reset
-          controls.</p>
-        <ul class="feature-list">
-          <li>Browser-enforced encryption boundary</li>
-          <li>No tracking telemetry</li>
-          <li>Complete offline functionality</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Deep Dive Privacy Box -->
-  <section class="privacy-deepdive" id="privacy">
-    <div class="deepdive-box">
-      <div class="deepdive-text">
-        <h2>Zero Cloud Dependency Architecture</h2>
-        <p>Traditional SaaS invoicing platforms process your invoices on distant servers, storing sensitive client
-          details and banking records. Workflare Invoicing executes entirely within your browser runtime.</p>
-        <a href="app.html" class="btn-primary-launch">Test Offline Engine</a>
-      </div>
-
-      <div class="arch-code-block">
-        <div style="color: #64748b; margin-bottom: 8px;">// Local IndexedDB Schema (Dexie.js)</div>
-        <span style="color: #f472b6;">db</span>.version(1).stores({<br>
-        &nbsp;&nbsp;settings: <span style="color: #a5f3fc;">'id'</span>,<br>
-        &nbsp;&nbsp;clients: <span style="color: #a5f3fc;">'++id, name, email, company'</span>,<br>
-        &nbsp;&nbsp;invoices: <span style="color: #a5f3fc;">'++id, invoiceNumber, clientId, date'</span><br>
-        });<br><br>
-        <div style="color: #34d399;">// Result: 0 Network requests. 100% Private.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="final-cta">
-    <h2>Build Professional Invoices In Seconds</h2>
-    <p style="color: var(--slate-600); font-size: 1.15rem; margin-bottom: 2rem;">Zero setup required. Open the
-      application workspace and start billing.</p>
-    <a href="app.html" class="btn-primary-launch" style="font-size: 1.15rem; padding: 1rem 2.6rem;">Launch Workflare
-      Workspace 🚀</a>
-  </section>
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <h2>Build Professional Invoices In Seconds</h2>
+      <p style="color: var(--slate-600); font-size: 1.15rem; margin-bottom: 2rem;">Zero setup required. Open the
+        application workspace and start billing.</p>
+      <a href="app.html" class="btn-primary-launch" style="font-size: 1.15rem; padding: 1rem 2.6rem;">Launch Workflare
+        Workspace 🚀</a>
+    </section>
 
   </main>
 
   <!-- Footer -->
   <footer>
-    <p>© 2026 Workflare Invoicing Engine. Developed with Svelte 5 & IndexedDB. All client data remains strictly local.
+    <p>
+      <a href="https://github.com/workflareindia/workflare-invoicing" target="_blank" rel="noopener noreferrer">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"
+          style="vertical-align: middle; margin-right: 6px; position: relative; top: -1px;">
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+          </path>
+        </svg>Github Repository</a>
     </p>
+    <p>© 2026 <a href="https://workflare.in/" target="_blank" rel="noopener noreferrer">Workflare</a> | Built with
+      Intent, Backed with Support.</p>
   </footer>
 
 </body>
