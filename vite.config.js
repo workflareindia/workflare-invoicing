@@ -12,7 +12,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        app: resolve(__dirname, 'app.html')
+        app: resolve(__dirname, 'app.html'),
+        smallScreen: resolve(__dirname, 'small-screen.html')
       }
     }
   }
