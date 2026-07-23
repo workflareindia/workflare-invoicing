@@ -5,7 +5,7 @@
 ![IndexedDB](https://img.shields.io/badge/Database-IndexedDB_(Dexie.js)-059669?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Offline First](https://img.shields.io/badge/Architecture-100%25_Offline_First-0284c7?style=for-the-badge)
 ![Zero Cloud](https://img.shields.io/badge/Privacy-Zero_Cloud_Middlemen-10b981?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-slate?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL_v3-blue?style=for-the-badge)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-invoicing.workflare.in-blue?style=for-the-badge&logo=cloudflare&logoColor=white)](https://invoicing.workflare.in)
 
 **Live Demo**: [invoicing.workflare.in](https://invoicing.workflare.in)
@@ -287,6 +287,6 @@ Unlike traditional cloud SaaS platforms that transmit sensitive banking details,
 
 ## 📄 License & Author
 
-**Workflare Invoicing Engine** is open-source software licensed under the **MIT License**.
+**Workflare Invoicing Engine** is open-source software licensed under the **GNU General Public License v3 (GPLv3)**. See the [LICENSE](file:///Users/godarayudhvir/Github/workflare-invoicing/LICENSE) file for details.
 
 Designed and developed for privacy-conscious developers, contractors, and agencies.
