@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Background Icon Tile -->
+  <rect x="32" y="32" width="448" height="448" rx="96" fill="url(#bgGrad)" filter="url(#dropShadow)" />
+
+  <!-- Document / Invoice Base Sheet -->
+  <path d="M144 128 C144 114.7 154.7 104 168 104 L296 104 L368 176 L368 384 C368 397.3 357.3 408 344 408 L168 408 C154.7 408 144 397.3 144 384 Z" fill="#FFFFFF" />
+  
+  <!-- Folded Page Corner -->
+  <path d="M296 104 L296 160 C296 168.8 303.2 176 312 176 L368 176 Z" fill="#E2E8F0" />
+
+  <!-- Document Content Preview Lines -->
+  <rect x="184" y="200" width="144" height="20" rx="10" fill="#0F172A" opacity="0.8" />
+  <rect x="184" y="244" width="104" height="16" rx="8" fill="#64748B" opacity="0.6" />
+  <rect x="184" y="280" width="128" height="16" rx="8" fill="#64748B" opacity="0.6" />
+
+  <!-- Verified Checkmark Badge -->
+  <circle cx="316" cy="324" r="44" fill="url(#accentGrad)" filter="url(#dropShadow)" />
+  <path d="M298 324 L310 336 L334 310" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>

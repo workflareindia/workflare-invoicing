@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aman Joshi Developments — Retainer Invoice Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      /* Emerald for invoicing/payments */
+      --primary-light: #ecfdf5;
+      --primary-hover: #047857;
+      --text-main: #1c1c24;
+      --text-muted: #666675;
+      --border: #e4e4eb;
+      --bg-page: #f3f4f6;
+      --accent-brand: #5b42f3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── APP SHELL ── */
+    .app {
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 10;
+    }
+
+    .sidebar-header .brand {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.4px;
+    }
+
+    .sidebar-header .brand span {
+      color: var(--accent-brand);
+    }
+
+    .sidebar-header p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .sidebar-body {
+      padding: 18px 22px;
+      flex: 1;
+    }
+
+    .form-section {
+      margin-bottom: 22px;
+    }
+
+    .form-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--text-main);
+      background: #fafafa;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.08);
+      background: #fff;
+    }
+
+    .form-row textarea {
+      resize: vertical;
+      min-height: 65px;
+      line-height: 1.5;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Signature controls */
+    .sig-input-choice {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .sig-choice-btn {
+      flex: 1;
+      padding: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: #fafafa;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .sig-choice-btn.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .signature-canvas-container {
+      border: 1px solid var(--border);
+      background: #fafafa;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .sig-canvas {
+      display: block;
+      width: 100%;
+      height: 100px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .sig-clear-btn {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Line items styling */
+    .line-items {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .line-item {
+      display: grid;
+      grid-template-columns: 1fr 100px 26px;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .line-item input {
+      padding: 7px 9px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: #fafafa;
+      outline: none;
+    }
+
+    .remove-btn {
+      width: 26px;
+      height: 26px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .remove-btn:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+
+    .add-line-btn {
+      margin-top: 7px;
+      padding: 7px 12px;
+      background: none;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.15s;
+    }
+
+    .add-line-btn:hover {
+      background: var(--primary-light);
+    }
+
+    /* Sidebar actions */
+    .sidebar-footer {
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 7px;
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+    }
+
+    .btn-primary {
+      flex: 1;
+      padding: 10px 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      padding: 10px 13px;
+      background: none;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-page);
+      color: var(--text-main);
+    }
+
+    /* ── PREVIEW PANEL ── */
+    .preview-panel {
+      padding: 28px;
+      overflow-y: auto;
+      background: var(--bg-page);
+    }
+
+    .preview-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .print-btn {
+      padding: 8px 16px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .print-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* ── DOCUMENT ── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm 18mm;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), #34d399);
+    }
+
+    /* Doc header */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .doc-logo-wrap img {
+      max-height: 76px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .doc-logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .doc-logo-text em {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+    .doc-logo-sub {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .company-right {
+      text-align: right;
+    }
+
+    .company-right .name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .company-right p {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-top: 3px;
+    }
+
+    /* Badges */
+    .invoice-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+    }
+
+    .badge .bl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .badge .bv {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Client card */
+    .info-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      margin-bottom: 18px;
+    }
+
+    .info-card-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 11px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      letter-spacing: 0.3px;
+    }
+
+    .info-value {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    /* Subject / Description */
+    .subject-block {
+      background: var(--primary-light);
+      padding: 9px 14px;
+      border-radius: 6px;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .subject-block h2 {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+    }
+
+    /* Retainer Details description */
+    .desc-box {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .desc-box p {
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    /* Pricing table */
+    .price-table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .price-table th {
+      background: #f8f9fa;
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .price-table th:last-child,
+    .price-table td:last-child {
+      text-align: right;
+    }
+
+    .price-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      color: #333342;
+    }
+
+    .price-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .price-table .total-row td {
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Bank Details box */
+    .payment-instructions {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      background: #fcfcfc;
+    }
+
+    .payment-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .payment-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .payment-label {
+      font-size: 8.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .payment-val {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-top: 1px;
+    }
+
+    /* E-Signatures Display */
+    .signatures-row {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .signature-display-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .signature-rendered-wrap {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .signature-rendered-wrap img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .signature-typed-text {
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #0c4a6e;
+      user-select: none;
+    }
+
+    .signature-line {
+      width: 100%;
+      border-top: 1px solid var(--text-main);
+      padding-top: 6px;
+    }
+
+    .signature-name {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .signature-role {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      .app {
+        display: block;
+      }
+
+      .sidebar,
+      .preview-toolbar {
+        display: none;
+      }
+
+      .preview-panel {
+        padding: 0;
+        background: none;
+        overflow: visible;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      body {
+        background: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 18mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">Aman Joshi <span>Developments</span> <span
+            style="font-weight:400;color:var(--text-muted);font-size:13px;">Retainer Invoice Generator</span></div>
+        <p>Fill out the details to generate a professional invoice with e-signatures</p>
+      </div>
+
+      <div class="sidebar-body">
+
+        <!-- Invoice Meta Details -->
+        <div class="form-section">
+          <div class="form-section-title">Invoice Details</div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Issue Date</label>
+              <input type="date" id="invDate" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Serial # (e.g. 01)</label>
+              <input type="text" id="invSerial" value="01" maxlength="3" oninput="render()">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Period From</label>
+              <input type="date" id="periodFrom" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Period To</label>
+              <input type="date" id="periodTo" oninput="render()">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Due Within (days)</label>
+              <input type="number" id="dueDays" value="15" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Currency</label>
+              <select id="invCurrency" onchange="render()">
+                <option value="INR">₹ (INR)</option>
+                <option value="USD">$ (USD)</option>
+                <option value="EUR">€ (EUR)</option>
+                <option value="GBP">£ (GBP)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Status Badge</label>
+              <select id="invStatus" onchange="render()">
+                <option value="UNPAID">Unpaid / Due</option>
+                <option value="PAID">Paid</option>
+                <option value="NONE">None (Hidden)</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Invoice Number</label>
+              <input type="text" id="invNoDisplay" readonly
+                style="background:var(--primary-light); color:var(--primary); font-weight:600; cursor:default;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Business (Provider) Info -->
+        <div class="form-section">
+          <div class="form-section-title">Your Details (Provider)</div>
+
+          <div class="form-row">
+            <label>Business Name</label>
+            <input type="text" id="bizName" value="Aman Joshi Developments" oninput="render()">
+          </div>
+          <div class="form-row">
+            <label>Address</label>
+            <input type="text" id="bizAddr" value="Dehradun, Uttarakhand - 248001, India" oninput="render()">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Email</label>
+              <input type="email" id="bizEmail" value="amanjoshi16011997@gmail.com" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>GST / Tax ID</label>
+              <input type="text" id="bizTaxId" placeholder="e.g. 07AAAAA0000A1Z5" oninput="render()">
+            </div>
+          </div>
+
+          <div class="form-section-title" style="border:none; margin-top:10px; font-size:9px;">Bank Details</div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Bank Name</label>
+              <input type="text" id="bankName" placeholder="e.g. HDFC Bank" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Account Name</label>
+              <input type="text" id="bankAccName" placeholder="e.g. Aman Joshi" oninput="render()">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Account Number</label>
+              <input type="text" id="bankAccNo" placeholder="e.g. 50200012345678" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>IFSC / SWIFT</label>
+              <input type="text" id="bankIfsc" placeholder="e.g. HDFC0001234" oninput="render()">
+            </div>
+          </div>
+          <div class="form-row">
+            <label>UPI ID (Optional)</label>
+            <input type="text" id="upiId" placeholder="e.g. amanjoshi@upi" oninput="render()">
+          </div>
+        </div>
+
+        <!-- Client Info -->
+        <div class="form-section">
+          <div class="form-section-title">Client Details</div>
+          <div class="form-row">
+            <label>Client Name</label>
+            <input type="text" id="clientName" placeholder="e.g. John Doe" oninput="render()">
+          </div>
+          <div class="form-row">
+            <label>Organization</label>
+            <input type="text" id="clientOrg" placeholder="e.g. Acme Corp" oninput="render()">
+          </div>
+          <div class="form-row">
+            <label>Address</label>
+            <input type="text" id="clientAddr" placeholder="Street, City, Zip, Country" oninput="render()">
+          </div>
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" id="clientEmail" placeholder="client@company.com" oninput="render()">
+          </div>
+        </div>
+
+        <!-- Retainer Breakdown -->
+        <div class="form-section">
+          <div class="form-section-title">Retainer Scope & Billing</div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Retainer Rate</label>
+              <input type="number" id="retainerRate" placeholder="0" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Tax Rate (%)</label>
+              <input type="number" id="taxRate" value="0" min="0" oninput="render()" disabled>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Scope Title</label>
+            <input type="text" id="retainerTitle" placeholder="e.g. Retainer Fee" oninput="render()">
+          </div>
+          <div class="form-row">
+            <label>Scope Description</label>
+            <textarea id="retainerDesc" placeholder="e.g. Development retainer for software engineering services..." oninput="render()"></textarea>
+          </div>
+
+          <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Ad-hoc
+            / Extra Deliverables</label>
+          <div id="extraItemsWrapper" class="line-items"></div>
+          <button class="add-line-btn" onclick="addExtraItem()">+ Add Extra Item</button>
+        </div>
+
+        <!-- Developer Signature -->
+        <div class="form-section">
+          <div class="form-section-title">Developer E-Signature</div>
+          <div class="sig-input-choice">
+            <button class="sig-choice-btn active" id="devSigDrawBtn" onclick="setSigMethod('dev', 'draw')">Draw</button>
+            <button class="sig-choice-btn" id="devSigTypeBtn" onclick="setSigMethod('dev', 'type')">Type Name</button>
+          </div>
+
+          <div id="devDrawContainer" class="signature-canvas-container">
+            <canvas id="devCanvas" class="sig-canvas"></canvas>
+            <button class="sig-clear-btn" onclick="clearCanvas('dev')">Clear</button>
+          </div>
+
+          <div id="devTypeContainer" class="form-row" style="display: none;">
+            <label>Signature Text</label>
+            <input type="text" id="devSigText" value="Aman Joshi" oninput="render()">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Signatory Name</label>
+              <input type="text" id="devSigName" value="Aman Joshi" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Designation</label>
+              <input type="text" id="devSigDesignation" value="Founder / Developer" oninput="render()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Client Signature -->
+        <div class="form-section">
+          <div class="form-section-title">Client E-Signature</div>
+          <div class="sig-input-choice">
+            <button class="sig-choice-btn active" id="clientSigDrawBtn"
+              onclick="setSigMethod('client', 'draw')">Draw</button>
+            <button class="sig-choice-btn" id="clientSigTypeBtn" onclick="setSigMethod('client', 'type')">Type
+              Name</button>
+          </div>
+
+          <div id="clientDrawContainer" class="signature-canvas-container">
+            <canvas id="clientCanvas" class="sig-canvas"></canvas>
+            <button class="sig-clear-btn" onclick="clearCanvas('client')">Clear</button>
+          </div>
+
+          <div id="clientTypeContainer" class="form-row" style="display: none;">
+            <label>Signature Text</label>
+            <input type="text" id="clientSigText" placeholder="Client Signatory Name" oninput="render()">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Signatory Name</label>
+              <input type="text" id="clientSigName" placeholder="Client Name" oninput="render()">
+            </div>
+            <div class="form-row">
+              <label>Designation</label>
+              <input type="text" id="clientSigDesignation" placeholder="Director / CTO" oninput="render()">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-primary" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <button class="btn-secondary" onclick="copyHTML()">Copy HTML</button>
+      </div>
+    </aside>
+
+    <!-- ══ PREVIEW ══ -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <span class="preview-label">Invoice Preview — A4</span>
+        <button class="print-btn" onclick="window.print()">Print / Export PDF →</button>
+      </div>
+      <div id="preview"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // State
+    const currencies = {
+      INR: { symbol: '₹', locale: 'en-IN' },
+      USD: { symbol: '$', locale: 'en-US' },
+      EUR: { symbol: '€', locale: 'en-DE' },
+      GBP: { symbol: '£', locale: 'en-GB' }
+    };
+
+    let extraItems = [];
+    let sigMethods = { dev: 'draw', client: 'draw' };
+
+    // Canvas drawing states
+    const canvases = { dev: null, client: null };
+    const contexts = { dev: null, client: null };
+    const drawing = { dev: false, client: false };
+
+    // Date pre-fill
+    const today = new Date();
+    document.getElementById('invDate').value = today.toISOString().split('T')[0];
+
+    // Retainer period starts empty
+
+    // Initialize Canvas drawing logic
+    function initCanvas(id) {
+      const canvas = document.getElementById(id + 'Canvas');
+      canvases[id] = canvas;
+      contexts[id] = canvas.getContext('2d');
+
+      // Set internal resolution matching element size
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        // Restore styling after resize
+        contexts[id].strokeStyle = '#0369a1'; // Deep sky blue line
+        contexts[id].lineWidth = 2.5;
+        contexts[id].lineCap = 'round';
+      }
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Handle drawing events (Mouse & Touch)
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      function startDraw(e) {
+        drawing[id] = true;
+        const pos = getPos(e);
+        contexts[id].beginPath();
+        contexts[id].moveTo(pos.x, pos.y);
+        e.preventDefault();
+      }
+
+      function draw(e) {
+        if (!drawing[id]) return;
+        const pos = getPos(e);
+        contexts[id].lineTo(pos.x, pos.y);
+        contexts[id].stroke();
+        e.preventDefault();
+      }
+
+      function stopDraw() {
+        if (drawing[id]) {
+          drawing[id] = false;
+          render(); // Trigger re-render to update the image in preview
+        }
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+
+      canvas.addEventListener('touchstart', startDraw);
+      canvas.addEventListener('touchmove', draw);
+      canvas.addEventListener('touchend', stopDraw);
+    }
+
+    function clearCanvas(id) {
+      const canvas = canvases[id];
+      contexts[id].clearRect(0, 0, canvas.width, canvas.height);
+      render();
+    }
+
+    function isCanvasBlank(canvas) {
+      if (!canvas) return true;
+      const blank = document.createElement('canvas');
+      blank.width = canvas.width;
+      blank.height = canvas.height;
+      return canvas.toDataURL() === blank.toDataURL();
+    }
+
+    // Toggle signature drawing/typing method
+    function setSigMethod(party, method) {
+      sigMethods[party] = method;
+      document.getElementById(`${party}SigDrawBtn`).classList.toggle('active', method === 'draw');
+      document.getElementById(`${party}SigTypeBtn`).classList.toggle('active', method === 'type');
+
+      document.getElementById(`${party}DrawContainer`).style.display = method === 'draw' ? 'block' : 'none';
+      document.getElementById(`${party}TypeContainer`).style.display = method === 'type' ? 'block' : 'none';
+
+      // Re-trigger layout alignment/rendering
+      if (method === 'draw') {
+        // Quick timeout to allow display change before drawing/resizing
+        setTimeout(() => {
+          const canvas = canvases[party];
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width;
+          canvas.height = rect.height;
+          contexts[party].strokeStyle = '#0369a1';
+          contexts[party].lineWidth = 2.5;
+          contexts[party].lineCap = 'round';
+          render();
+        }, 50);
+      } else {
+        render();
+      }
+    }
+
+    // Invoice Meta Code Builder
+    function buildInvoiceNo() {
+      const dateStr = document.getElementById('invDate').value;
+      const serial = document.getElementById('invSerial').value.padStart(2, '0') || '01';
+      if (!dateStr) return 'AJIDV-' + serial;
+      const d = new Date(dateStr + 'T00:00:00');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      const invNo = `AJIDV-${dd}${mm}${yyyy}${serial}`;
+      document.getElementById('invNoDisplay').value = invNo;
+      return invNo;
+    }
+
+    // Extra / Ad-hoc Items Logic
+    function buildExtraItems() {
+      const wrap = document.getElementById('extraItemsWrapper');
+      wrap.innerHTML = '';
+      extraItems.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'line-item';
+        row.innerHTML = `
+          <input type="text" placeholder="e.g. Extra 5 hours development work" value="${item.desc}" oninput="extraItems[${i}].desc=this.value;render()">
+          <input type="number" placeholder="Amount" value="${item.amount}" oninput="extraItems[${i}].amount=this.value;render()">
+          <button class="remove-btn" onclick="removeExtraItem(${i})" title="Remove">×</button>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function addExtraItem() {
+      extraItems.push({ desc: '', amount: '' });
+      buildExtraItems();
+      render();
+    }
+
+    function removeExtraItem(i) {
+      extraItems.splice(i, 1);
+      buildExtraItems();
+      render();
+    }
+
+    // Date formatting functions
+    function fmtDate(dateStr) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function formatDDMMYY(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr + 'T00:00:00');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yy = String(d.getFullYear()).slice(-2);
+      return `${dd}/${mm}/${yy}`;
+    }
+
+    // Period Range formatting (DD/MM/YY - DD/MM/YY)
+    function fmtPeriod(fromStr, toStr) {
+      if (!fromStr && !toStr) return '';
+      if (fromStr && toStr) {
+        return `${formatDDMMYY(fromStr)} - ${formatDDMMYY(toStr)}`;
+      }
+      if (fromStr) {
+        return `From ${formatDDMMYY(fromStr)}`;
+      }
+      if (toStr) {
+        return `Until ${formatDDMMYY(toStr)}`;
+      }
+      return '';
+    }
+
+    // Due Date builder
+    function getDueDate(dateStr, days) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr + 'T00:00:00');
+      d.setDate(d.getDate() + (parseInt(days) || 15));
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    // Formatter for currency
+    function fmtVal(n, curKey) {
+      const cur = currencies[curKey] || currencies.INR;
+      return cur.symbol + Number(n).toLocaleString(cur.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Render invoice
+    function render() {
+      // Manage tax input state dynamically based on GST ID
+      const bizTaxIdInput = document.getElementById('bizTaxId');
+      const taxRateInput = document.getElementById('taxRate');
+      if (!bizTaxIdInput.value.trim()) {
+        taxRateInput.value = 0;
+        taxRateInput.disabled = true;
+      } else {
+        taxRateInput.disabled = false;
+        if (taxRateInput.value == 0) {
+          taxRateInput.value = 18;
+        }
+      }
+
+      const invNo = buildInvoiceNo();
+      const curKey = document.getElementById('invCurrency').value;
+      const cur = currencies[curKey];
+
+      const v = {
+        invNo,
+        date: document.getElementById('invDate').value,
+        period: fmtPeriod(
+          document.getElementById('periodFrom').value,
+          document.getElementById('periodTo').value
+        ),
+        dueDays: document.getElementById('dueDays').value || '15',
+        status: document.getElementById('invStatus').value,
+
+        logoType: 'image',
+        bizLogoImg: 'aj.png',
+        bizLogoText: 'Aman Joshi Developments',
+        bizName: document.getElementById('bizName').value || 'Aman Joshi Developments',
+        bizAddr: document.getElementById('bizAddr').value || '',
+        bizEmail: document.getElementById('bizEmail').value || '',
+        bizTaxId: document.getElementById('bizTaxId').value || '',
+
+        bankName: document.getElementById('bankName').value || '',
+        bankAccName: document.getElementById('bankAccName').value || '',
+        bankAccNo: document.getElementById('bankAccNo').value || '',
+        bankIfsc: document.getElementById('bankIfsc').value || '',
+        upiId: document.getElementById('upiId').value || '',
+
+        clientName: document.getElementById('clientName').value || '—',
+        clientOrg: document.getElementById('clientOrg').value || '—',
+        clientAddr: document.getElementById('clientAddr').value || '—',
+        clientEmail: document.getElementById('clientEmail').value || '—',
+
+        retainerRate: parseFloat(document.getElementById('retainerRate').value) || 0,
+        taxRate: parseFloat(document.getElementById('taxRate').value) || 0,
+        retainerTitle: document.getElementById('retainerTitle').value || '',
+        retainerDesc: document.getElementById('retainerDesc').value || '',
+
+        devSigName: document.getElementById('devSigName').value || '',
+        devSigDesignation: document.getElementById('devSigDesignation').value || '',
+        devSigText: document.getElementById('devSigText').value || '',
+
+        clientSigName: document.getElementById('clientSigName').value || '',
+        clientSigDesignation: document.getElementById('clientSigDesignation').value || '',
+        clientSigText: document.getElementById('clientSigText').value || ''
+      };
+
+      // Calculate totals
+      let subtotal = 0;
+      const lineRows = [];
+
+      if (v.retainerTitle || v.retainerDesc || v.retainerRate > 0) {
+        subtotal += v.retainerRate;
+        lineRows.push(`
+          <tr>
+            <td>
+              ${v.retainerTitle ? `<strong>${v.retainerTitle}</strong>` : ''}
+              ${v.retainerDesc ? `${v.retainerTitle ? '<br>' : ''}<span style="font-size:10.5px; color:var(--text-muted); line-height: 1.45;">${v.retainerDesc.replace(/\n/g, '<br>')}</span>` : ''}
+            </td>
+            <td>${fmtVal(v.retainerRate, curKey)}</td>
+          </tr>
+        `);
+      }
+
+      extraItems.forEach(item => {
+        const amt = parseFloat(item.amount) || 0;
+        subtotal += amt;
+        lineRows.push(`
+          <tr>
+            <td><strong>${item.desc || 'Extra Deliverable'}</strong></td>
+            <td>${fmtVal(amt, curKey)}</td>
+          </tr>
+        `);
+      });
+
+      const taxAmount = subtotal * (v.taxRate / 100);
+      const grandTotal = subtotal + taxAmount;
+
+      // GST Disclaimer HTML
+      const gstDisclaimerHTML = !v.bizTaxId ? `
+        <div style="margin-top: 10px; margin-bottom: 15px; padding: 10px 14px; border-radius: 6px; border: 1px dashed #d1d5db; background-color: #f9fafb; font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+          <strong>Disclaimer:</strong> Aman Joshi Developments is currently not registered under GST as we do not meet the government-mandated turnover threshold required for registration. Consequently, no GST / Tax is imposed on this invoice.
+        </div>
+      ` : '';
+
+      // Status Badge HTML
+      let statusBadgeHTML = '';
+      if (v.status === 'PAID') {
+        statusBadgeHTML = `<div class="badge" style="background:#d1fae5; border-color:#a7f3d0;"><div class="bl" style="color:#065f46;">Payment Status</div><div class="bv" style="color:#047857;">PAID ✓</div></div>`;
+      } else if (v.status === 'UNPAID') {
+        statusBadgeHTML = `<div class="badge" style="background:#fef3c7; border-color:#fde68a;"><div class="bl" style="color:#92400e;">Payment Status</div><div class="bv" style="color:#b45309;">UNPAID / DUE</div></div>`;
+      }
+
+      // UPI QR Code Generation
+      let upiQrHTML = '';
+      if (v.upiId) {
+        const pa = v.upiId.trim();
+        let upiUrl = `upi://pay?pa=${encodeURIComponent(pa)}`;
+        if (grandTotal > 0 && curKey === 'INR') {
+          upiUrl += `&am=${grandTotal.toFixed(2)}&cu=INR`;
+        }
+        const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUrl)}`;
+
+        upiQrHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-left: 14px; border-left: 1px solid var(--border); flex-shrink: 0;">
+            <img src="${qrImgUrl}" alt="Scan to Pay via UPI" style="width: 85px; height: 85px; border-radius: 6px; border: 1px solid var(--border); padding: 3px; background: #fff;">
+            <span style="font-size: 8px; font-weight: 700; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">Scan to Pay via UPI</span>
+          </div>
+        `;
+      }
+
+      // Bank Details block HTML
+      const bankDetailsHTML = (v.bankName || v.bankAccNo || v.upiId) ? `
+        <div class="payment-instructions">
+          <div class="payment-title">Payment Bank Details / Wire Transfer Instructions</div>
+          <div style="display: flex; gap: 14px; align-items: center;">
+            <div class="payment-grid" style="flex: 1;">
+              ${v.bankAccName ? `<div class="payment-item"><span class="payment-label">Beneficiary Name</span><span class="payment-val">${v.bankAccName}</span></div>` : ''}
+              ${v.bankName ? `<div class="payment-item"><span class="payment-label">Bank Name</span><span class="payment-val">${v.bankName}</span></div>` : ''}
+              ${v.bankAccNo ? `<div class="payment-item"><span class="payment-label">Account Number</span><span class="payment-val">${v.bankAccNo}</span></div>` : ''}
+              ${v.bankIfsc ? `<div class="payment-item"><span class="payment-label">IFSC / BIC / SWIFT</span><span class="payment-val">${v.bankIfsc}</span></div>` : ''}
+              ${v.upiId ? `<div class="payment-item" style="grid-column: span 2;"><span class="payment-label">UPI ID</span><span class="payment-val">${v.upiId}</span></div>` : ''}
+            </div>
+            ${upiQrHTML}
+          </div>
+        </div>
+      ` : '';
+
+      // Signature Rendering (Image vs Cursive Text)
+      let devSigRenderHTML = '';
+      if (sigMethods.dev === 'draw') {
+        const canvas = canvases.dev;
+        if (canvas && !isCanvasBlank(canvas)) {
+          devSigRenderHTML = `<img src="${canvas.toDataURL()}" alt="Dev Signature">`;
+        }
+      } else {
+        if (v.devSigText) {
+          devSigRenderHTML = `<span class="signature-typed-text">${v.devSigText}</span>`;
+        }
+      }
+
+      let clientSigRenderHTML = '';
+      if (sigMethods.client === 'draw') {
+        const canvas = canvases.client;
+        if (canvas && !isCanvasBlank(canvas)) {
+          clientSigRenderHTML = `<img src="${canvas.toDataURL()}" alt="Client Signature">`;
+        }
+      } else {
+        if (v.clientSigText) {
+          clientSigRenderHTML = `<span class="signature-typed-text">${v.clientSigText}</span>`;
+        }
+      }
+
+      const html = `
+        <div class="page">
+          <div class="accent-bar"></div>
+          <div>
+
+            <!-- Header -->
+            <div class="doc-header">
+              <div class="doc-logo-wrap">
+                ${v.logoType === 'image' ? `<img src="${v.bizLogoImg}" alt="${v.bizName}">` : `<div class="doc-logo-text">${v.bizLogoText}</div>`}
+              </div>
+              <div class="company-right">
+                <div class="name">${v.bizName}</div>
+                <p>${v.bizAddr ? v.bizAddr + '<br>' : ''}${v.bizEmail ? v.bizEmail : ''}
+                   ${v.bizTaxId ? '<br>Tax / GST ID: ' + v.bizTaxId : ''}
+                </p>
+              </div>
+            </div>
+
+            <!-- Meta Badges -->
+            <div class="invoice-badges">
+              <div class="badge"><div class="bl">Invoice No.</div><div class="bv">${v.invNo}</div></div>
+              <div class="badge"><div class="bl">Issue Date</div><div class="bv">${fmtDate(v.date)}</div></div>
+              <div class="badge"><div class="bl">Due Date</div><div class="bv">${getDueDate(v.date, v.dueDays)}</div></div>
+              ${v.period ? `<div class="badge"><div class="bl">Billing Period</div><div class="bv">${v.period}</div></div>` : ''}
+              ${statusBadgeHTML}
+            </div>
+
+            <!-- Client Card -->
+            <div class="info-card">
+              <div class="info-card-title">Invoiced To (Client)</div>
+              <div class="info-grid">
+                <div class="info-item"><span class="info-label">Contact Person</span><span class="info-value">${v.clientName}</span></div>
+                <div class="info-item"><span class="info-label">Organization</span><span class="info-value">${v.clientOrg}</span></div>
+                <div class="info-item"><span class="info-label">Address</span><span class="info-value">${v.clientAddr}</span></div>
+                <div class="info-item" style="grid-column: span 3; margin-top: 4px;"><span class="info-label">Email</span><span class="info-value">${v.clientEmail}</span></div>
+              </div>
+            </div>
+
+
+            <!-- Line Items -->
+            <div class="price-table-wrap">
+              <table class="price-table">
+                <thead>
+                  <tr>
+                    <th>Services Description</th>
+                    <th style="width: 150px; text-align: right;">Amount (${curKey})</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${lineRows.length > 0 ? lineRows.join('') : `
+                    <tr>
+                      <td colspan="2" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 15px;">No line items added yet</td>
+                    </tr>
+                  `}
+                  <tr>
+                    <td style="text-align: right; font-weight: 500;">Subtotal</td>
+                    <td>${fmtVal(subtotal, curKey)}</td>
+                  </tr>
+                  ${v.taxRate > 0 ? `
+                    <tr>
+                      <td style="text-align: right; font-weight: 500;">Tax / GST (${v.taxRate}%)</td>
+                      <td>${fmtVal(taxAmount, curKey)}</td>
+                    </tr>
+                  ` : ''}
+                  <tr class="total-row">
+                    <td style="text-align: right;">Total Amount Due</td>
+                    <td>${fmtVal(grandTotal, curKey)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            ${gstDisclaimerHTML}
+
+            <!-- Payment instructions -->
+            ${bankDetailsHTML}
+
+          </div>
+
+          <!-- Signatures Section -->
+          <div class="signatures-row">
+            <div class="signature-display-box">
+              <div class="signature-rendered-wrap">
+                ${devSigRenderHTML}
+              </div>
+              <div class="signature-line">
+                <div class="signature-name">${v.devSigName}</div>
+                <div class="signature-role">${v.devSigDesignation}</div>
+                <div style="font-size: 8px; color: var(--text-muted); text-transform: uppercase; margin-top:2px;">Developer Representative</div>
+              </div>
+            </div>
+
+            <div class="signature-display-box">
+              <div class="signature-rendered-wrap">
+                ${clientSigRenderHTML}
+              </div>
+              <div class="signature-line">
+                <div class="signature-name">${v.clientSigName || '—'}</div>
+                <div class="signature-role">${v.clientSigDesignation || '—'}</div>
+                <div style="font-size: 8px; color: var(--text-muted); text-transform: uppercase; margin-top:2px;">Client Representative</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      document.getElementById('preview').innerHTML = html;
+    }
+
+    // Copy full HTML content
+    function copyHTML() {
+      const content = document.getElementById('preview').innerHTML;
+      const styles = document.querySelector('style').textContent;
+      const full = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice — ${buildInvoiceNo()}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f3f4f6; padding: 30px; font-family: 'Inter', sans-serif; }
+    ${styles}
+  </style>
+</head>
+<body>
+  ${content}
+</body>
+</html>`;
+      navigator.clipboard.writeText(full).then(() => {
+        const btn = event.target;
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.textContent = 'Copy HTML', 2000);
+      });
+    }
+
+    // Initialize Canvas Pads & Line Items
+    initCanvas('dev');
+    initCanvas('client');
+    buildExtraItems();
+    render();
+  </script>
+</body>
+
+</html>

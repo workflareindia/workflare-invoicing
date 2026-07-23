@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & Social Meta -->
+  <title>Workflare Invoicing — Enterprise-Grade Privacy-First Invoicing Engine</title>
+  <meta name="description"
+    content="Workflare Invoicing is a high-performance, offline-first invoice generator built for tech consultants, agencies, and freelancers. 100% browser-based IndexedDB storage, dual e-signatures, live A4 rendering, and instant vector PDF export." />
+  <meta name="keywords"
+    content="Workflare, Invoice Generator, Svelte 5, IndexedDB, Offline Invoicing, Privacy-First PDF Generator, Retainer Billing, Dual Signature Invoices" />
+  <meta name="author" content="Workflare Engineering" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- OpenGraph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Workflare Invoicing — Enterprise-Grade Privacy-First Invoicing Engine" />
+  <meta property="og:description" content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Workflare Invoicing — Enterprise-Grade Privacy-First Invoicing Engine" />
+  <meta name="twitter:description" content="100% browser-based IndexedDB offline invoice generator with dual e-signatures and instant vector PDF export." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-accent: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      --emerald-800: #065f46;
+      --emerald-50: #ecfdf5;
+      --cyan-600: #0891b2;
+      --indigo-600: #4f46e5;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+
+      --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--slate-900);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Decorative background mesh */
+    .bg-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1000px;
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--border);
+    }
+
+    section {
+      scroll-margin-top: 80px;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: contain;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--slate-700);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--emerald-600);
+    }
+
+    /* Button Color Fixes: Crisp contrast & deep text readability */
+    .btn-primary-launch {
+      background-color: var(--emerald-700);
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 0.75rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(4, 120, 87, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      border: 1px solid var(--emerald-800);
+    }
+
+    .btn-primary-launch:hover {
+      background-color: var(--emerald-800);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(4, 120, 87, 0.35);
+    }
+
+    .btn-hero-secondary {
+      background-color: #ffffff;
+      border: 1px solid var(--border-strong);
+      color: var(--slate-900) !important;
+      font-weight: 700;
+      padding: 0.75rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-hero-secondary:hover {
+      background-color: var(--bg-accent);
+      border-color: var(--slate-500);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 4.5rem 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--emerald-50);
+      border: 1px solid rgba(5, 150, 105, 0.3);
+      color: var(--emerald-800);
+      padding: 0.45rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 1.4rem;
+      letter-spacing: -1px;
+      color: var(--slate-900);
+    }
+
+    .hero-title span {
+      color: var(--emerald-700);
+    }
+
+    .hero-description {
+      font-size: 1.18rem;
+      color: var(--slate-700);
+      margin-bottom: 2.2rem;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    /* Product UI Mockup Frame */
+    .app-preview-frame {
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .frame-header {
+      background: var(--bg-accent);
+      padding: 0.75rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background: #ef4444;
+    }
+
+    .dot-yellow {
+      background: #f59e0b;
+    }
+
+    .dot-green {
+      background: #10b981;
+    }
+
+    .frame-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      font-weight: 600;
+    }
+
+    .preview-mock-content {
+      padding: 1.5rem;
+      background: #f8fafc;
+    }
+
+    .mock-invoice-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .mock-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px solid var(--emerald-600);
+      padding-bottom: 1rem;
+    }
+
+    .mock-company {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--slate-900);
+    }
+
+    .mock-status {
+      background: #dcfce7;
+      color: var(--emerald-800);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .mock-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      color: var(--slate-700);
+    }
+
+    .mock-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--slate-900);
+      margin-top: 1rem;
+      padding-top: 0.5rem;
+    }
+
+    /* Tech Stack & Architecture Grid */
+    .tech-strip {
+      max-width: 1280px;
+      margin: 3rem auto 6rem;
+      padding: 0 2rem;
+    }
+
+    .strip-title {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--slate-600);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.8rem;
+      font-weight: 700;
+    }
+
+    .tech-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--slate-800);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Enterprise Modules Showcase */
+    .modules-section {
+      max-width: 1280px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-heading p {
+      color: var(--slate-600);
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .module-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .module-card:hover {
+      border-color: var(--emerald-600);
+      box-shadow: 0 12px 30px -8px rgba(5, 150, 105, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .module-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--emerald-800);
+      background: var(--emerald-50);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .module-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 0.8rem;
+    }
+
+    .module-card p {
+      color: var(--slate-600);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .feature-list li {
+      font-size: 0.88rem;
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--emerald-700);
+      font-weight: 800;
+    }
+
+    /* Privacy Architecture Deep Dive */
+    .privacy-deepdive {
+      max-width: 1280px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+    }
+
+    .deepdive-box {
+      background: var(--slate-900);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.4);
+    }
+
+    .deepdive-text h2 {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+    }
+
+    .deepdive-text p {
+      color: var(--slate-400);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .arch-code-block {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #38bdf8;
+      line-height: 1.6;
+    }
+
+    /* Footer CTA */
+    .final-cta {
+      max-width: 1280px;
+      margin: 0 auto 4rem;
+      padding: 5rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--emerald-50), #eff6ff);
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+    }
+
+    .final-cta h2 {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--slate-600);
+      font-size: 0.9rem;
+      background: #ffffff;
+      font-weight: 500;
+    }
+
+    /* Accessibility Skip Link */
+    .skip-to-content {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: var(--emerald-800);
+      color: #ffffff;
+      padding: 0.6rem 1.2rem;
+      z-index: 1000;
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: top 0.2s;
+    }
+
+    .skip-to-content:focus {
+      top: 1rem;
+    }
+
+    /* Screen reader helper */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 0.9rem 1.2rem;
+      }
+
+      .nav-menu {
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .hero-title {
+        font-size: 2.3rem;
+      }
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions a {
+        text-align: center;
+        justify-content: center;
+      }
+
+      .tech-logos {
+        gap: 1rem;
+      }
+
+      .deepdive-box {
+        padding: 2rem 1.5rem;
+      }
+
+      .final-cta h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <div class="bg-grid"></div>
+
+  <!-- Header Nav -->
+  <header>
+    <nav class="nav-container" aria-label="Main Navigation">
+      <a href="#" class="brand-logo" aria-label="Workflare Invoicing Home">
+        <img src="/logo.svg" alt="Workflare Logo" class="brand-logo-img" width="40" height="40" />
+        <span>Workflare Invoicing</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#features">Stack</a></li>
+        <li><a href="#modules">Architecture</a></li>
+        <li><a href="#privacy">Zero-Cloud Privacy</a></li>
+        <li><a href="app.html" class="btn-primary-launch">Launch App Workspace ⚡</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section" aria-labelledby="hero-heading">
+    <div>
+      <div class="hero-badge-pill">
+        🛡️ High-Performance Offline Invoicing Engine
+      </div>
+      <h1 class="hero-title" id="hero-heading">
+        Enterprise-Grade Invoicing <span>Without Cloud Middlemen</span>
+      </h1>
+      <p class="hero-description">
+        Workflare Invoicing is a privacy-first, offline web application designed for consultants, agencies, and
+        engineers. Store all billing history locally in browser IndexedDB, sign dual-party contracts, and render
+        print-ready vector PDFs in milliseconds.
+      </p>
+      <div class="hero-actions">
+        <a href="app.html" class="btn-primary-launch" style="font-size: 1.05rem; padding: 0.9rem 2.2rem;">Launch App
+          Workspace</a>
+        <a href="#modules" class="btn-hero-secondary">Explore Architecture</a>
+      </div>
+    </div>
+
+    <!-- Product Mockup Frame -->
+    <div class="app-preview-frame">
+      <div class="frame-header">
+        <div class="window-dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <div class="frame-title">Workflare Engine — A4 Live Canvas View</div>
+      </div>
+      <div class="preview-mock-content">
+        <div class="mock-invoice-card">
+          <div class="mock-header">
+            <div>
+              <div class="mock-company">Nexus Systems LLC</div>
+              <div style="font-size: 0.75rem; color: #64748b;">INV-9428 • Retainer Bill</div>
+            </div>
+            <span class="mock-status">✓ UNPAID</span>
+          </div>
+          <div class="mock-row">
+            <span>Full-Stack Engineering & Cloud Retainer</span>
+            <strong>₹1,50,000</strong>
+          </div>
+          <div class="mock-row">
+            <span>GST / Tax (18%)</span>
+            <strong>₹27,000</strong>
+          </div>
+          <div class="mock-total">
+            <span>Total Payable:</span>
+            <span style="color: var(--emerald-700);">₹1,77,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack Grid -->
+  <section class="tech-strip" id="features">
+    <div class="strip-title">Powered By High-Performance Client Infrastructure</div>
+    <div class="tech-logos">
+      <div class="tech-pill">⚡ Svelte 5 (Runes Reactive Core)</div>
+      <div class="tech-pill">💾 Dexie.js (IndexedDB Persistence)</div>
+      <div class="tech-pill">📄 html2pdf.js (Vector Renderer)</div>
+      <div class="tech-pill">📦 PapaParse & JSZip (Bulk Parser)</div>
+    </div>
+  </section>
+
+  <!-- Detailed Modules Showcase -->
+  <section class="modules-section" id="modules">
+    <div class="section-heading">
+      <h2>Comprehensive Module Architecture</h2>
+      <p>Exploration of the core subsystems built into Workflare Invoicing.</p>
+    </div>
+
+    <div class="modules-grid">
+
+      <!-- Module 1 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 01</span>
+        <h3>Real-time Live Canvas Engine</h3>
+        <p>Bi-directional reactive rendering powered by Svelte 5. Form changes in the sidebar instantly reflect on an
+          exact A4 ratio document.</p>
+        <ul class="feature-list">
+          <li>Live subtotal and tax calculation</li>
+          <li>A4 ratio print preview bounds</li>
+          <li>Custom currency symbol customizer</li>
+        </ul>
+      </div>
+
+      <!-- Module 2 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 02</span>
+        <h3>Client CRM & Directory DB</h3>
+        <p>Built-in client relationship database stored directly in the browser. Save recurring profiles and auto-fill
+          billing credentials instantly.</p>
+        <ul class="feature-list">
+          <li>Quick search & filter client list</li>
+          <li>1-Click billing auto-populate</li>
+          <li>Tax registration (GSTIN/EIN/VAT) tracking</li>
+        </ul>
+      </div>
+
+      <!-- Module 3 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 03</span>
+        <h3>Business Globals & Banking</h3>
+        <p>Persistent store for business credentials, beneficiary bank accounts, IFSC/SWIFT codes, and digital issuer
+          signatures.</p>
+        <ul class="feature-list">
+          <li>Logo upload & blob storage</li>
+          <li>Beneficiary banking & UPI integration</li>
+          <li>Typed or image digital signature editor</li>
+        </ul>
+      </div>
+
+      <!-- Module 4 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 04</span>
+        <h3>Bulk CSV & ZIP Engine</h3>
+        <p>Enterprise data batch processing. Upload bulk line item CSVs or export saved invoice histories into
+          compressed ZIP archives.</p>
+        <ul class="feature-list">
+          <li>PapaParse streaming CSV importer</li>
+          <li>JSZip batch archive downloader</li>
+          <li>Schema validation on upload</li>
+        </ul>
+      </div>
+
+      <!-- Module 5 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 05</span>
+        <h3>Vector PDF Generator</h3>
+        <p>Browser-native PDF rendering engine using html2canvas & jsPDF. Produces crisp, multi-page vector documents
+          ready for print.</p>
+        <ul class="feature-list">
+          <li>Zero page-break layout engine</li>
+          <li>High-DPI canvas scaling (2x)</li>
+          <li>Direct browser print fallback</li>
+        </ul>
+      </div>
+
+      <!-- Module 6 -->
+      <div class="module-card">
+        <span class="module-badge">MODULE 06</span>
+        <h3>Zero-Cloud Database Reset</h3>
+        <p>Full client data sovereignty. Complete database purge and local backup capabilities with single-click reset
+          controls.</p>
+        <ul class="feature-list">
+          <li>Browser-enforced encryption boundary</li>
+          <li>No tracking telemetry</li>
+          <li>Complete offline functionality</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Deep Dive Privacy Box -->
+  <section class="privacy-deepdive" id="privacy">
+    <div class="deepdive-box">
+      <div class="deepdive-text">
+        <h2>Zero Cloud Dependency Architecture</h2>
+        <p>Traditional SaaS invoicing platforms process your invoices on distant servers, storing sensitive client
+          details and banking records. Workflare Invoicing executes entirely within your browser runtime.</p>
+        <a href="app.html" class="btn-primary-launch">Test Offline Engine</a>
+      </div>
+
+      <div class="arch-code-block">
+        <div style="color: #64748b; margin-bottom: 8px;">// Local IndexedDB Schema (Dexie.js)</div>
+        <span style="color: #f472b6;">db</span>.version(1).stores({<br>
+        &nbsp;&nbsp;settings: <span style="color: #a5f3fc;">'id'</span>,<br>
+        &nbsp;&nbsp;clients: <span style="color: #a5f3fc;">'++id, name, email, company'</span>,<br>
+        &nbsp;&nbsp;invoices: <span style="color: #a5f3fc;">'++id, invoiceNumber, clientId, date'</span><br>
+        });<br><br>
+        <div style="color: #34d399;">// Result: 0 Network requests. 100% Private.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <h2>Build Professional Invoices In Seconds</h2>
+    <p style="color: var(--slate-600); font-size: 1.15rem; margin-bottom: 2rem;">Zero setup required. Open the
+      application workspace and start billing.</p>
+    <a href="app.html" class="btn-primary-launch" style="font-size: 1.15rem; padding: 1rem 2.6rem;">Launch Workflare
+      Workspace 🚀</a>
+  </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Workflare Invoicing Engine. Developed with Svelte 5 & IndexedDB. All client data remains strictly local.
+    </p>
+  </footer>
+
+</body>
+
+</html>
