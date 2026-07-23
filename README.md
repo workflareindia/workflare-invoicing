@@ -6,6 +6,9 @@
 ![Offline First](https://img.shields.io/badge/Architecture-100%25_Offline_First-0284c7?style=for-the-badge)
 ![Zero Cloud](https://img.shields.io/badge/Privacy-Zero_Cloud_Middlemen-10b981?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-slate?style=for-the-badge)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-invoicing.workflare.in-blue?style=for-the-badge&logo=cloudflare&logoColor=white)](https://invoicing.workflare.in)
+
+**Live Demo**: [invoicing.workflare.in](https://invoicing.workflare.in)
 
 **Workflare Invoicing** is a high-performance, privacy-focused, zero-backend Web Application designed for technology consultants, independent contractors, agencies, and billing professionals. Engineered with **Svelte 5**, **Vite**, and **IndexedDB (Dexie.js)**, Workflare provides instant A4 vector PDF generation, client management, dual e-signature authorization, and bulk CSV batch processing — operating **100% inside your browser runtime**.
 
@@ -245,7 +248,11 @@ npm run preview
 ### Static Hosting Compatibility
 Because **Workflare Invoicing** is a 100% client-side application, the built `dist/` directory can be deployed instantly to any static hosting service:
 - **GitHub Pages**: Deploy `dist/` branch via GitHub Actions.
-- **Vercel / Netlify / Cloudflare Pages**: Connect repo with build command `npm run build` and output directory `dist`.
+- **Cloudflare Pages**: Connect your repository and configure the build settings as follows:
+  * **Framework Preset**: `Svelte`
+  * **Build Command**: `npm run build`
+  * **Build Output Directory**: `dist`
+- **Vercel / Netlify**: Connect repo with build command `npm run build` and output directory `dist`.
 
 ---
 
