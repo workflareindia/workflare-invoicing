@@ -80,6 +80,7 @@ jobs:
 
   build-ios:
     name: Build iOS Xcode App Package
+    needs: build-android
     permissions:
       contents: write
     runs-on: macos-latest
