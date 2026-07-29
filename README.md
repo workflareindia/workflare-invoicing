@@ -3,54 +3,91 @@
 ![Svelte 5](https://img.shields.io/badge/Framework-Svelte_5-ff3e00?style=for-the-badge&logo=svelte&logoColor=white)
 ![Vite 5](https://img.shields.io/badge/Build_Tool-Vite_5-646cff?style=for-the-badge&logo=vite&logoColor=white)
 ![IndexedDB](https://img.shields.io/badge/Database-IndexedDB_(Dexie.js)-059669?style=for-the-badge&logo=sqlite&logoColor=white)
-![Offline First](https://img.shields.io/badge/Architecture-100%25_Offline_First-0284c7?style=for-the-badge)
+![PWA](https://img.shields.io/badge/PWA-Offline_Service_Worker-4f46e5?style=for-the-badge&logo=pwa&logoColor=white)
+![Tauri Desktop](https://img.shields.io/badge/Desktop-macOS_%26_Windows_(Tauri_v2)-24c8db?style=for-the-badge&logo=tauri&logoColor=white)
+![Capacitor Mobile](https://img.shields.io/badge/Mobile-Android_%26_iOS_(Capacitor_v8)-119afb?style=for-the-badge&logo=capacitor&logoColor=white)
 ![Zero Cloud](https://img.shields.io/badge/Privacy-Zero_Cloud_Middlemen-10b981?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-GPL_v3-blue?style=for-the-badge)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-invoicing.workflare.in-blue?style=for-the-badge&logo=cloudflare&logoColor=white)](https://invoicing.workflare.in)
 
 **Live Demo**: [invoicing.workflare.in](https://invoicing.workflare.in)
 
-**Workflare Invoicing** is a high-performance, privacy-focused, zero-backend Web Application designed for technology consultants, independent contractors, agencies, and billing professionals. Engineered with **Svelte 5**, **Vite**, and **IndexedDB (Dexie.js)**, Workflare provides instant A4 vector PDF generation, client management, dual e-signature authorization, and bulk CSV batch processing — operating **100% inside your browser runtime**.
+**Workflare Invoicing** is a high-performance, privacy-focused, zero-backend Web Application, Progressive Web App (PWA), and Cross-Platform Native Application (macOS, Windows, Android, iOS) designed for technology consultants, independent contractors, agencies, and billing professionals. Engineered with **Svelte 5**, **Vite**, **VitePWA**, **Tauri v2**, **Capacitor v8**, and **IndexedDB (Dexie.js)**, Workflare provides instant A4 vector PDF generation, client management, dual e-signature authorization, and bulk CSV batch processing — operating **100% inside your local device runtime**.
 
 ---
 
 ## 📑 Table of Contents
 
 - [✨ Core Capabilities](#-core-capabilities)
+- [📱 Desktop & Mobile Native Apps](#-desktop--mobile-native-apps)
 - [🏛️ System Architecture](#️-system-architecture)
 - [💾 Data Persistence Schema (Dexie.js)](#-data-persistence-schema-dexiejs)
 - [📁 Project Directory Structure](#-project-directory-structure)
 - [🚀 Quick Start & Development](#-quick-start--development)
-- [🛠️ Production Build & Deployment](#️-production-build--deployment)
+- [🛠️ Production Build & CI/CD Workflows](#️-production-build--cicd-workflows)
 - [🛡️ Security, Privacy & Zero-Cloud Guarantee](#️-security-privacy--zero-cloud-guarantee)
-- [🗺️ Codebase Audit & Architectural Roadmap](#️-codebase-audit--architectural-roadmap)
 - [📄 License & Author](#-license--author)
 
 ---
 
 ## ✨ Core Capabilities
 
-### ⚙️ 1. Business & Issuer Master Profile
+### ⚡ 1. Progressive Web App (PWA) & Offline Capabilities
+- **Installable Desktop/Mobile App**: Install directly from Chrome, Edge, or Safari as a standalone desktop or mobile web application.
+- **Service Worker Pre-Caching**: Full offline functionality via `vite-plugin-pwa` caching all static assets, application bundles, local fonts, and Google Fonts.
+- **Live Update Banners**: In-app Service Worker registration (`PwaRegister.svelte`) that prompts users when a new software version is available.
+
+### ⚙️ 2. Business & Issuer Master Profile
 - **Enterprise Identity**: Configure company name, brand tagline, logo, tax registration number (GSTIN / VAT / EIN / SSN), official email, phone, website, and multi-line physical address.
 - **Financial Banking Ledger**: Store beneficiary entity, financial institution name, account number, SWIFT / BIC / IFSC codes, and UPI virtual payment addresses.
 - **Custom Branding Assets**: Custom vector branding (`logo.svg`) for app UI and favicon, with uploaded image/base64 support for generated invoice documents.
 - **Digital Issuer E-Signatures**: Supports both stylized cursive font-rendered signatures and high-resolution uploaded image signatures.
 
-### 👥 2. Client Relationship Directory (CRM)
+### 👥 3. Client Relationship Directory (CRM)
 - **Persistent Client Database**: Store unlimited client contact records locally with instant search, auto-fill, and profile management.
 - **One-Click Invoice Auto-Population**: Select any saved client to instantly populate billing contacts, billing address, and tax registration IDs.
 - **Client Signature Verification**: Supports dual-signatory workflows with client typed cursive signatures, designated signee names, and official titles.
 
-### 📝 3. Live Editor & Vector PDF Engine
+### 📝 4. Live Editor & Vector PDF Engine
 - **WYSIWYG Live Preview**: Real-time side-by-side editing where line items, sub-notes, quantities, and rates update the printable preview dynamically.
 - **Automated Financial Calculations**: Auto-calculates item totals, subtotal, configurable GST/VAT tax rates, and final grand balance.
 - **Client-Side Vector PDF Export**: Generates crisp, single-page or multi-page A4 PDFs via `html2pdf.js` directly within the client machine without external API rendering.
 - **Status Indicator Badges**: Toggle invoice statuses (`PAID`, `UNPAID / DUE`, `OVERDUE`, `DRAFT`) with visual CSS badges.
 
-### 📂 4. Bulk Operations & Data Mobility
+### 📂 5. Bulk Operations & Data Mobility
 - **Structured CSV Import/Export**: Parse bulk invoice lines or export database tables into standardized CSV structures via `PapaParse`.
 - **ZIP Batch Export**: Package multiple invoice records into a single compressed `.zip` archive via `JSZip`.
 - **Database Reset & Backup**: Complete control to reset, back up, or wipe local IndexedDB state at any time.
+
+---
+
+## 📱 Desktop & Mobile Native Apps
+
+Workflare Invoicing is available across all major operating systems:
+
+| Platform | Technology | Output Binaries |
+| :--- | :--- | :--- |
+| **Web / PWA** | `vite-plugin-pwa` + Workbox | Web App Manifest + Offline Service Worker (`sw.js`) |
+| **macOS** | Tauri v2 (Rust shell) | `.dmg` Installer & `.app` Bundle |
+| **Windows** | Tauri v2 (Rust shell) | `.msi` Installer & `.exe` Standalone Executable |
+| **Android** | Capacitor v8 (Native Gradle) | `.apk` Debug Package & `.aab` Release Bundle |
+| **iOS** | Capacitor v8 (Xcode / Swift) | `.app` Xcode Archive Package |
+
+### Automated CI/CD Workflows (GitHub Actions)
+Every commit pushed to `main` triggers automated GitHub Actions build pipelines:
+- **`build-desktop.yml`**: Compiles macOS (`.dmg`/`.app`) and Windows (`.msi`/`.exe`) apps on `macos-latest` and `windows-latest` runners.
+- **`build-mobile.yml`**: Compiles Android (`.apk`/`.aab`) and iOS packages using JDK 17, Xcode, and Node.js 22 LTS.
+
+Download compiled application binaries directly from [GitHub Actions Run Artifacts](https://github.com/workflareindia/workflare-invoicing/actions).
+
+### macOS Gatekeeper Security Notice
+When installing the macOS app (`.dmg` or `.app`) built via GitHub Actions without a paid Apple Developer Certificate, macOS Gatekeeper may present a security prompt stating that *"WorkflareInvoicing.app is damaged and can’t be opened"*. 
+
+To clear the web quarantine attribute and open the application, execute this command in your Mac Terminal:
+
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/WorkflareInvoicing.app
+```
 
 ---
 
@@ -72,6 +109,8 @@ graph TD
     B -->|CSV Bulk Data| H[PapaParse Parser]
     H -->|ZIP Batch Package| I[JSZip Archiver]
     I -->|Archive Output| J[Local File Download .zip]
+    
+    A -->|Native Shell Bridge| K[Tauri v2 Desktop / Capacitor v8 Mobile]
 ```
 
 ### Tech Stack Breakdown
@@ -80,6 +119,9 @@ graph TD
 | :--- | :--- | :--- |
 | **Frontend Framework** | [Svelte 5](https://svelte.dev/) | Ultra-lean, compile-time reactive component framework ensuring near-zero bundle footprint. |
 | **Build System** | [Vite 5](https://vitejs.dev/) | Lightning-fast HMR dev server & optimized multi-page Rollup bundler. |
+| **PWA Engine** | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) | Generates offline Service Workers and Web App Manifests. |
+| **Desktop Shell** | [Tauri v2](https://tauri.app/) | Lightweight Rust-backed desktop runtime for macOS and Windows. |
+| **Mobile Shell** | [Capacitor v8](https://capacitorjs.com/) | Native bridge targeting Android (Gradle) and iOS (Xcode). |
 | **Local Database** | [Dexie.js](https://dexie.org/) | Minimalist wrapper for browser IndexedDB providing transactional ACID storage. |
 | **PDF Generation** | [html2pdf.js](https://github.com/eKoopmans/html2pdf.js) | Combines HTML2Canvas & jsPDF to convert live DOM nodes into vector PDF documents. |
 | **CSV Engine** | [PapaParse](https://www.papaparse.com/) | Fast, multi-threaded CSV parsing and stringifying for data migration. |
@@ -92,8 +134,6 @@ graph TD
 
 All local database transactions are managed through Dexie.js under the database identifier `InvoiceGeneratorDB`.
 
-### Database Schema Definition (`src/lib/db.js`)
-
 ```javascript
 db.version(1).stores({
   settings: 'id',                                               // Key: 'company_settings'
@@ -103,102 +143,46 @@ db.version(1).stores({
 });
 ```
 
-### Primary Model Entities
-
-#### 1. Settings Entity (`company_settings`)
-```typescript
-interface CompanySettings {
-  id: string;                    // 'company_settings'
-  companyName: string;           // e.g. "Nexus Systems LLC"
-  companyTagline: string;        // e.g. "Cloud Infrastructure & Enterprise Solutions"
-  ownerName: string;             // Owner / Issuer Name
-  ownerTitle: string;            // Official Designation
-  email: string;                 // Official Billing Email
-  phone: string;                 // Contact Telephone Number
-  website: string;               // URL string
-  address: string;               // Physical Address
-  cityStateZip: string;          // City, Region & Postal Code
-  taxId: string;                 // GSTIN / VAT / EIN Registration Number
-  beneficiaryName: string;       // Banking Beneficiary Name
-  bankName: string;              // Financial Institution
-  accountNumber: string;         // Account Number
-  ifscCode: string;              // Routing / SWIFT / IFSC Code
-  upiId: string;                 // Virtual Payment Address
-  logoUrl: string;               // Base64 Data URL or SVG Path
-  defaultCurrency: string;       // Currency code ('INR', 'USD', 'EUR', 'GBP')
-  currencySymbol: string;        // Currency symbol ('₹', '$', '€', '£')
-  defaultTaxRate: number;        // Standard tax rate percentage (e.g. 18)
-  paymentTerms: string;          // Payment terms statement
-  issuerSignatureType: string;   // 'text' | 'image' | 'none'
-  issuerSignatureText: string;   // Cursive rendered signature text
-  issuerSignatureImage: string;  // Base64 encoded image string
-}
-```
-
-#### 2. Invoice Document Entity
-```typescript
-interface InvoiceDocument {
-  id?: number;                   // Auto-increment primary key
-  invoiceNumber: string;         // Unique Invoice Identifier (e.g. "INV-2026-001")
-  clientId?: number;             // Associated saved client ID reference
-  clientName: string;            // Contact Person Name
-  clientCompany: string;         // Billing Organization Name
-  clientEmail: string;           // Client Email Address
-  clientPhone: string;           // Client Phone Number
-  clientTaxId: string;           // Client GSTIN / Tax Identification Number
-  clientAddress: string;         // Client Billing Street Address
-  date: string;                  // Issue Date (ISO string 'YYYY-MM-DD')
-  dueDate: string;               // Due Date (ISO string 'YYYY-MM-DD')
-  periodFrom?: string;           // Retainer Period Start ('YYYY-MM-DD')
-  periodTo?: string;             // Retainer Period End ('YYYY-MM-DD')
-  status: 'PAID' | 'UNPAID' | 'NONE'; // Payment Status Flag
-  currencyKey: string;           // 'INR' | 'USD' | 'EUR' | 'GBP'
-  currencySymbol: string;        // '₹' | '$' | '€' | '£'
-  taxRate: number;               // Applicable Tax Percentage
-  items: Array<{
-    description: string;         // Scope / Item title
-    subText?: string;            // Additional line item details
-    quantity: number;            // Hours or Quantity
-    rate: number;                // Hourly or Unit Rate
-  }>;
-  clientSignatureType: string;   // 'text' | 'image' | 'none'
-  clientSignatureText?: string;  // Cursive signature string
-  clientSignatureImage?: string; // Base64 signature image
-  clientSignatureName?: string;  // Signatory Name
-  clientSignatureDesignation?: string; // Signatory Title
-}
-```
-
 ---
 
 ## 📁 Project Directory Structure
 
 ```
-Invoice-generator/
-├── index.html                    # High-converting Landing Page & Product Showcase
-├── app.html                      # Workspace Application Entry Point
-├── logo.svg                      # Master SVG Brand Logo Asset
-├── package.json                  # Dependencies & Script Runners
-├── vite.config.js                # Multi-Page Vite & Rollup Configuration
-├── public/
-│   └── logo.svg                  # Favicon & Static Branding Asset
-│
+workflare-invoicing/
+├── .github/
+│   └── workflows/
+│       ├── build-desktop.yml      # CI/CD pipeline for macOS & Windows desktop apps
+│       └── build-mobile.yml       # CI/CD pipeline for Android APK/AAB & iOS Xcode apps
+├── android/                       # Native Android Studio / Gradle project shell
+├── ios/                           # Native Xcode / Swift project shell
+├── src-tauri/                     # Native Tauri v2 Rust desktop application shell
+│   ├── tauri.conf.json            # Tauri desktop configuration & window rules
+│   └── icons/                     # Native macOS (.icns) & Windows (.ico) app icons
+├── scripts/
+│   └── generate_icons.js          # Sharp script for generating PWA PNG icons
+├── index.html                     # Product Landing Page & Native Redirect Controller
+├── app.html                       # Core Invoicing Workspace Application Entry Point
+├── capacitor.config.json          # Capacitor Mobile Configuration
+├── package.json                   # Dependencies, PWA, Tauri & Capacitor scripts
+├── vite.config.js                 # Vite + VitePWA Multi-Page Configuration
+├── public/                        # Static assets, PWA icons, manifest & logos
 └── src/
-    ├── App.svelte                # Core Application Orchestrator Component
-    ├── main.js                   # Application Mount Bootstrap Point
-    ├── app.css                   # Global CSS Tokens, Variables & Utilities
+    ├── App.svelte                 # Core Application Orchestrator Component
+    ├── main.js                    # Application Mount Point
+    ├── app.css                    # Design Tokens & UI Styles
     └── lib/
-        ├── db.js                 # Dexie IndexedDB Schema & Initializers
-        ├── csvUtils.js           # CSV Import/Export & ZIP Utility Functions
+        ├── db.js                  # Dexie IndexedDB Schema
+        ├── csvUtils.js            # CSV Import/Export & ZIP utilities
         ├── components/
-        │   ├── Header.svelte     # App Workspace Navbar & Action Controls
-        │   ├── Sidebar.svelte    # Invoice Form Controls & Saved Invoices Drawer
-        │   ├── InvoicePreview.svelte # Container for Printable Invoice Document
+        │   ├── Header.svelte      # Navbar & main action controls
+        │   ├── Sidebar.svelte     # Invoice Form Editor & Drawer
+        │   ├── InvoicePreview.svelte # Printable A4 Preview Container
+        │   ├── PwaRegister.svelte # PWA Service Worker update toast banner
         │   ├── ClientManager.svelte  # Client Directory Modal
         │   ├── SettingsModal.svelte  # Business Settings & Signature Configuration
-        │   └── BulkCsvModal.svelte   # Bulk CSV Import/Export Modal
+        │   └── BulkCsvModal.svelte   # CSV Import/Export Modal
         └── templates/
-            └── VanillaTemplate.svelte # Pixel-Perfect Printable A4 CSS Document Template
+            └── VanillaTemplate.svelte # Printable A4 CSS Document Template
 ```
 
 ---
@@ -206,100 +190,46 @@ Invoice-generator/
 ## 🚀 Quick Start & Development
 
 ### Prerequisites
-- **Node.js**: `v18.0.0` or higher
-- **Package Manager**: `npm` (v9+) or `pnpm`
+- **Node.js**: `v22.0.0` or higher (LTS recommended)
+- **Package Manager**: `npm` (v10+)
 
 ### 1. Clone Repository & Install Dependencies
 ```bash
-# Navigate to the workspace directory
-cd /Users/godarayudhvir/Projects/Invoice-generator
-
-# Install dependencies
+git clone https://github.com/workflareindia/workflare-invoicing.git
+cd workflare-invoicing
 npm install
 ```
 
-### 2. Run Local Development Server
-```bash
-npm run dev
-```
-The application will launch automatically at `http://localhost:3000`.
-- **Landing Page**: `http://localhost:3000/index.html`
-- **Application Workspace**: `http://localhost:3000/app.html`
+### 2. Run Development Commands
+
+| Command | Purpose |
+| :--- | :--- |
+| `npm run dev` | Launch local Vite dev server at `http://localhost:3000` |
+| `npm run build` | Build production PWA bundle & service workers inside `dist/` |
+| `npm run preview` | Preview production PWA build locally |
+| `npm run generate-icons` | Regenerate PWA icons from `public/logo.svg` |
+| `npm run cap:sync` | Build web assets & sync into Android & iOS native targets |
+| `npm run tauri dev` | Launch native desktop application locally |
 
 ---
 
-## 🛠️ Production Build & Deployment
+## 🛠️ Production Build & CI/CD Workflows
 
-### Build for Production
-To bundle the application into static, minified HTML/JS/CSS assets:
-```bash
-npm run build
-```
-Output files will be generated inside the `dist/` directory:
-- `dist/index.html`
-- `dist/app.html`
-- `dist/assets/`
-
-### Preview Production Build
-```bash
-npm run preview
-```
-
-### Static Hosting Compatibility
-Because **Workflare Invoicing** is a 100% client-side application, the built `dist/` directory can be deployed instantly to any static hosting service:
-- **GitHub Pages**: Deploy `dist/` branch via GitHub Actions.
-- **Cloudflare Pages**: Connect your repository and configure the build settings as follows:
-  * **Framework Preset**: `Svelte`
-  * **Build Command**: `npm run build`
-  * **Build Output Directory**: `dist`
-- **Vercel / Netlify**: Connect repo with build command `npm run build` and output directory `dist`.
+### Static Web & PWA Deployment
+Because Workflare Invoicing is 100% client-side, the built `dist/` folder can be hosted on any static provider:
+- **Cloudflare Pages**: Preset `Svelte`, Build command `npm run build`, Output directory `dist`.
+- **Vercel / Netlify / GitHub Pages**: Build command `npm run build`, Output directory `dist`.
 
 ---
 
 ## 🛡️ Security, Privacy & Zero-Cloud Guarantee
 
-Unlike traditional cloud SaaS platforms that transmit sensitive banking details, client contact lists, and transaction amounts across third-party cloud servers, Workflare Invoicing is engineered around **Zero-Cloud Architecture**:
+Unlike traditional cloud SaaS platforms that transmit sensitive banking details, client contact lists, and transaction amounts across third-party servers, Workflare Invoicing is engineered around **Zero-Cloud Architecture**:
 
-1. **Zero External API Dependencies**: No remote servers process your data.
-2. **Local Browser Database**: All database tables reside inside your browser's persistent IndexedDB sandbox.
+1. **Zero External API Dependencies**: No remote servers process or store your financial data.
+2. **Local Browser Database**: All database tables reside inside your device's persistent IndexedDB sandbox.
 3. **No Telemetry & No Tracking**: Zero analytics scripts, tracking pixels, or third-party cookies.
-4. **Air-Gapped Operation**: Once loaded in your browser, the application functions seamlessly even without an active internet connection.
-
----
-
-## 🗺️ Codebase Audit & Architectural Roadmap
-
-### Key Future Enhancements
-
-#### 1. 🎨 Multi-Template Rendering Engine
-- Extend `src/lib/templates/` with additional printable themes (*Corporate Classic*, *Modern Minimalist*, *Creative Dual-Tone*).
-
-#### 2. 🌐 Auto Internationalization (i18n) & Localization
-- Add `Intl.NumberFormat` ISO currency formatting support for automated comma grouping and currency symbol placement based on client region.
-
-#### 3. 📊 Analytics Dashboard
-- Add local visual revenue charts (Paid vs. Pending Retainers, Monthly Revenue Breakdown) calculated directly from `db.invoices`.
-
-#### 4. 📲 Progressive Web App (PWA) Offline Support
-- Integrated `vite-plugin-pwa` with service worker asset precaching, background sync, and home-screen app installation on iOS, Android, and Desktop.
-
----
-
-## 📱 Desktop & Mobile Native Apps
-
-Workflare Invoicing is available as a PWA, Native Desktop App (macOS & Windows via **Tauri**), and Native Mobile App (Android & iOS via **Capacitor**).
-
-### Automated CI/CD Binaries
-All native binaries (`.dmg`, `.app`, `.msi`, `.exe`, `.apk`, `.aab`) are automatically built on every release using **GitHub Actions**. Download compiled binaries directly from the [GitHub Actions Artifacts](https://github.com/workflareindia/workflare-invoicing/actions).
-
-### macOS Gatekeeper Security Notice
-When installing the macOS app (`.dmg` / `.app`) downloaded directly from GitHub Actions without a paid Apple Developer certificate, macOS Gatekeeper may show a warning stating that the app is "damaged and can’t be opened". 
-
-To clear the macOS web quarantine flag and open the app, run this command in your Mac Terminal:
-
-```bash
-sudo xattr -rd com.apple.quarantine /Applications/WorkflareInvoicing.app
-```
+4. **Air-Gapped Operation**: Functions 100% offline without an active internet connection.
 
 ---
 
