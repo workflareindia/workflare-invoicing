@@ -233,6 +233,12 @@ Unlike traditional cloud SaaS platforms that transmit sensitive banking details,
 
 ---
 
+## 🐛 Known Issues & Limitations
+
+- **Android Launcher Icon**: The initial Android build package may show the default Capacitor launcher icon until custom mipmap icon drawables are synced across all display densities.
+
+---
+
 ## 📄 License & Author
 
 **Workflare Invoicing Engine** is open-source software licensed under the **GNU General Public License v3 (GPLv3)**. See the [LICENSE](file:///Users/godarayudhvir/Github/workflare-invoicing/LICENSE) file for details.
