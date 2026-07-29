@@ -22,11 +22,11 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Install Node Dependencies
         run: npm install
@@ -85,18 +85,20 @@ jobs:
       - name: Sync Capacitor iOS Platform
         run: npx cap sync ios
 
-      - name: Build iOS Xcode Project
+      - name: Build iOS Device Binary (iphoneos ARM64)
         run: |
           cd ios/App
           xcodebuild -project App.xcodeproj -scheme App -configuration Release -derivedDataPath build -sdk iphoneos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
 
-      - name: Compress iOS App Archive
+      - name: Package Real Device iOS (.ipa) Package
         run: |
           cd ios/App/build/Build/Products/Release-iphoneos
-          zip -r WorkflareInvoicing-iOS.app.zip App.app
+          mkdir -p Payload
+          cp -r App.app Payload/
+          zip -r WorkflareInvoicing-iOS.ipa Payload
 
-      - name: Upload iOS App Artifact
+      - name: Upload iOS (.ipa) App Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Workflare-Invoicing-iOS-App
-          path: ios/App/build/Build/Products/Release-iphoneos/WorkflareInvoicing-iOS.app.zip
+          name: Workflare-Invoicing-iOS-IPA
+          path: ios/App/build/Build/Products/Release-iphoneos/WorkflareInvoicing-iOS.ipa
