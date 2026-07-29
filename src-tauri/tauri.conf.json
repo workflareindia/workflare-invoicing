@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "Workflare Invoicing",
+        "url": "app.html",
         "width": 1280,
         "height": 800,
         "resizable": true,

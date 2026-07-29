@@ -3,6 +3,11 @@
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    if (window.Capacitor || window.__TAURI_INTERNALS__ || window.__TAURI__ || window.location.pathname.endsWith('/index.html') && (window.navigator.userAgent.includes('Tauri') || window.navigator.userAgent.includes('Capacitor'))) {
+      window.location.replace('/app.html');
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4f46e5" />
   <meta name="mobile-web-app-capable" content="yes" />
