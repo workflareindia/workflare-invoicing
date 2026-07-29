@@ -281,7 +281,25 @@ Unlike traditional cloud SaaS platforms that transmit sensitive banking details,
 - Add local visual revenue charts (Paid vs. Pending Retainers, Monthly Revenue Breakdown) calculated directly from `db.invoices`.
 
 #### 4. 📲 Progressive Web App (PWA) Offline Support
-- Integrate `vite-plugin-pwa` to enable background service workers and home-screen app installation on iOS and Android devices.
+- Integrated `vite-plugin-pwa` with service worker asset precaching, background sync, and home-screen app installation on iOS, Android, and Desktop.
+
+---
+
+## 📱 Desktop & Mobile Native Apps
+
+Workflare Invoicing is available as a PWA, Native Desktop App (macOS & Windows via **Tauri**), and Native Mobile App (Android & iOS via **Capacitor**).
+
+### Automated CI/CD Binaries
+All native binaries (`.dmg`, `.app`, `.msi`, `.exe`, `.apk`, `.aab`) are automatically built on every release using **GitHub Actions**. Download compiled binaries directly from the [GitHub Actions Artifacts](https://github.com/workflareindia/workflare-invoicing/actions).
+
+### macOS Gatekeeper Security Notice
+When installing the macOS app (`.dmg` / `.app`) downloaded directly from GitHub Actions without a paid Apple Developer certificate, macOS Gatekeeper may show a warning stating that the app is "damaged and can’t be opened". 
+
+To clear the macOS web quarantine flag and open the app, run this command in your Mac Terminal:
+
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/WorkflareInvoicing.app
+```
 
 ---
 
