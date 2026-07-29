@@ -6,9 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-icons": "node scripts/generate_icons.js",
+    "cap:sync": "npm run build && npx cap sync",
+    "tauri": "tauri"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.2",
+    "@capacitor/core": "^8.4.2",
+    "@capacitor/ios": "^8.4.2",
     "@lucide/svelte": "^1.0.0",
     "dexie": "^4.0.8",
     "html2pdf.js": "^0.14.0",
@@ -17,7 +23,11 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.2",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
-    "vite": "^5.0.0"
+    "@tauri-apps/cli": "^2.11.4",
+    "sharp": "^0.35.3",
+    "vite": "^5.0.0",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }

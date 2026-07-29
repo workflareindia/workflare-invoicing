@@ -6,6 +6,7 @@
   import SettingsModal from './lib/components/SettingsModal.svelte';
   import ClientManager from './lib/components/ClientManager.svelte';
   import BulkCsvModal from './lib/components/BulkCsvModal.svelte';
+  import PwaRegister from './lib/components/PwaRegister.svelte';
   import { getSettings, db } from './lib/db.js';
 
   let settings = {};
@@ -191,6 +192,7 @@
     {clients}
     onLoadInvoice={(inv) => invoice = inv}
   />
+  <PwaRegister />
 </div>
 
 <style>
