@@ -80,6 +80,14 @@ Every commit pushed to `main` triggers automated GitHub Actions build pipelines:
 
 Download compiled application binaries directly from [GitHub Actions Run Artifacts](https://github.com/workflareindia/workflare-invoicing/actions).
 
+### 📥 Download Latest Release
+
+[![Android APK](https://img.shields.io/badge/Download-Android_APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/app-debug.apk)
+[![iOS IPA](https://img.shields.io/badge/Download-iOS_IPA-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing-iOS.ipa)
+[![macOS ARM DMG](https://img.shields.io/badge/Download-macOS_ARM_.dmg-999999?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing_1.0.0_aarch64.dmg)
+[![Windows EXE](https://img.shields.io/badge/Download-Windows_.exe-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing_1.0.0_x64-setup.exe)
+[![Open PWA](https://img.shields.io/badge/Open-Web_PWA-4f46e5?style=for-the-badge&logo=pwa&logoColor=white)](https://invoicing.workflare.in/app.html)
+
 ### macOS Gatekeeper Security Notice
 When installing the macOS app (`.dmg` or `.app`) built via GitHub Actions without a paid Apple Developer Certificate, macOS Gatekeeper may present a security prompt stating that *"WorkflareInvoicing.app is damaged and can’t be opened"*. 
 

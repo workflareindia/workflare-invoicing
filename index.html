@@ -548,6 +548,151 @@
     }
 
 
+    /* Download Section */
+    .download-section {
+      max-width: 1280px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+    }
+
+    .download-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem 1.4rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--slate-900);
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      border-radius: 16px;
+    }
+
+    .download-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.14);
+      border-color: transparent;
+    }
+
+    /* Per-platform accent colours */
+    .download-card.android { --card-accent: #3ddc84; }
+    .download-card.ios     { --card-accent: #9b9b9b; }
+    .download-card.macos   { --card-accent: #a0aec0; }
+    .download-card.windows { --card-accent: #0078d6; }
+    .download-card.pwa     { --card-accent: #4f46e5; }
+
+    .download-card:hover {
+      border-color: var(--card-accent);
+      box-shadow: 0 16px 36px -8px color-mix(in srgb, var(--card-accent) 30%, transparent);
+    }
+
+    .download-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-accent);
+      transition: background 0.25s;
+      padding: 10px;
+    }
+
+    .download-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .download-card:hover .download-icon {
+      background: color-mix(in srgb, var(--card-accent) 12%, white);
+    }
+
+    .download-platform {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .download-format {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .download-btn-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--card-accent, var(--emerald-600));
+      border: 1.5px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
+      padding: 0.35rem 0.9rem;
+      border-radius: 30px;
+      transition: all 0.2s;
+    }
+
+    .download-card:hover .download-btn-label {
+      background: color-mix(in srgb, var(--card-accent) 10%, transparent);
+    }
+
+    .pwa-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--indigo-600);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 900px) {
+      .download-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .download-card.pwa {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+      .download-card.pwa {
+        grid-column: 1;
+      }
+    }
+
     /* Footer CTA */
     .final-cta {
       max-width: 1280px;
@@ -825,6 +970,7 @@
         <li><a href="#features">Stack</a></li>
         <li><a href="#modules">Architecture</a></li>
         <li><a href="#privacy">See It In Action</a></li>
+        <li><a href="#download">Download</a></li>
         <li><a href="app.html" class="btn-primary-launch">Launch App Workspace ⚡</a></li>
       </ul>
 
@@ -856,6 +1002,7 @@
         <li><a href="#features" class="mobile-nav-link">Stack</a></li>
         <li><a href="#modules" class="mobile-nav-link">Architecture</a></li>
         <li><a href="#privacy" class="mobile-nav-link">See It In Action</a></li>
+        <li><a href="#download" class="mobile-nav-link">Download</a></li>
         <li><a href="app.html" class="btn-primary-launch mobile-nav-link">Launch App Workspace ⚡</a></li>
       </ul>
     </div>
@@ -1031,6 +1178,68 @@
             alt="Bulk CSV Operations modal showing successfully imported 8 invoices with Download All PDFs as ZIP option and load-to-editor previews"
             class="screenshot-img" width="1440" height="900" loading="lazy" />
         </div>
+
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section" id="download" aria-labelledby="download-heading">
+      <div class="section-heading">
+        <h2 id="download-heading">Download for Your Platform</h2>
+        <p>Native apps for every operating system — privacy-first, zero cloud, fully offline.</p>
+      </div>
+
+      <div class="download-grid">
+
+        <!-- Android -->
+        <a href="https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/app-debug.apk"
+          class="download-card android" aria-label="Download Android APK">
+          <div class="download-icon"><img src="https://cdn.simpleicons.org/android/3ddc84" alt="Android" width="32" height="32" loading="lazy" /></div>
+          <div class="download-platform">Android</div>
+          <div class="download-format">.apk · v1.0.0</div>
+          <span class="download-btn-label">↓ Download</span>
+        </a>
+
+        <!-- iOS -->
+        <a href="https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing-iOS.ipa"
+          class="download-card ios" aria-label="Download iOS IPA">
+          <div class="download-icon"><img src="https://cdn.simpleicons.org/apple/555555" alt="Apple" width="32" height="32" loading="lazy" /></div>
+          <div class="download-platform">iOS</div>
+          <div class="download-format">.ipa · v1.0.0</div>
+          <span class="download-btn-label">↓ Download</span>
+        </a>
+
+        <!-- macOS -->
+        <a href="https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing_1.0.0_aarch64.dmg"
+          class="download-card macos" aria-label="Download macOS ARM DMG">
+          <div class="download-icon"><img src="https://cdn.simpleicons.org/apple/555555" alt="Apple" width="32" height="32" loading="lazy" /></div>
+          <div class="download-platform">macOS (ARM)</div>
+          <div class="download-format">.dmg · v1.0.0</div>
+          <span class="download-btn-label">↓ Download</span>
+        </a>
+
+        <!-- Windows -->
+        <a href="https://github.com/workflareindia/workflare-invoicing/releases/download/v1.0.0/WorkflareInvoicing_1.0.0_x64-setup.exe"
+          class="download-card windows" aria-label="Download Windows Installer">
+          <div class="download-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="32" height="32" aria-hidden="true">
+              <path fill="#0078d4" d="M1 1h9.5v9.5H1zm10.5 0H21v9.5h-9.5zM1 11.5h9.5V21H1zm10.5 0H21V21h-9.5z"/>
+            </svg>
+          </div>
+          <div class="download-platform">Windows</div>
+          <div class="download-format">.exe · v1.0.0</div>
+          <span class="download-btn-label">↓ Download</span>
+        </a>
+
+        <!-- PWA -->
+        <a href="https://invoicing.workflare.in/app.html"
+          class="download-card pwa" target="_blank" rel="noopener noreferrer" aria-label="Open Progressive Web App">
+          <span class="pwa-badge">LIVE</span>
+          <div class="download-icon"><img src="https://cdn.simpleicons.org/pwa/5a0fc8" alt="PWA" width="32" height="32" loading="lazy" /></div>
+          <div class="download-platform">Web / PWA</div>
+          <div class="download-format">Browser · Installable</div>
+          <span class="download-btn-label">↗ Open App</span>
+        </a>
 
       </div>
     </section>
